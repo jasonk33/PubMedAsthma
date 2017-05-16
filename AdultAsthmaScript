@@ -140,7 +140,6 @@ mesh_descrips #Counts and frequencies of mesh descriptors
 semantics #Counts and frequencies of semantic types
 plot(bar(x=mesh_descrips[1:25,:mesh_descriptor], y=mesh_descrips[1:25,:freq])) #Top 25 mesh descriptors
 plot(bar(x=semantics[1:10,:semantic_type], y=semantics[1:10,:freq])) #Top 10 semantic types
-#apriori2(itemsets, .01, .01, 1, 3, 0) #association rules for data
 length(mesh_descrips_filtered[:,:mesh_descriptor]) #Number of unique mesh descriptors after filtering
 mesh_descrips_filtered #Counts and frequencies of mesh descriptors after filtering
 p = plot(bar(x=mesh_descrips_filtered[1:25,:mesh_descriptor], y=mesh_descrips_filtered[1:25,:freq])) #Top 25 mesh descriptors after filtering

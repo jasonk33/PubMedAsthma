@@ -102,16 +102,6 @@ end #calculate frequency for each mesh term
 mesh_descrips[:freq]=frequency #add frequencies to data
 sort!(mesh_descrips, cols = :freq, rev = true) #sort by frequency
 rename!(mesh_descrips, [:x1, :x2], [:count, :mesh_descriptor]) #rename columns
-# itemsets = DataFrame(Any, 0,length(mesh_descrips[2])) #initialize empty dataframe
-# names!(itemsets, [symbol(mesh_descrips[i,2]) for i in 1:length(mesh_descrips[2])]) #add column names
-# for j = 1:length(arts)
-#     contains=Vector(length(mesh_descrips[2]))
-#     for i = 1:length(mesh_descrips[2])
-#         contain = Int(in(mesh_descrips[i,2],convert(Array{AbstractString}, unique(data[data[:pmid].==arts[j],1])))) #get 1 or 0 for each item in a transaction
-#         contains[i] = contain #add each item's value (1 or 0) to the transaction vector
-#     end
-#     push!(itemsets, contains) #add all transaction vectors to dataframe
-# end
 umls_filtered = mesh2umls[(mesh2umls[:umls] .== "Disease or Syndrome") | (mesh2umls[:umls] .== "Mental or Behavioral Dysfunction") | (mesh2umls[:umls] .== "Neoplastic Process"),:] #filter by semantic type
 data_filtered = join(data, umls_filtered, on = :mesh_descriptor) #new data after filtering
 arts_filtered = unique(data_filtered[:pmid]) #article ID's after filtering
@@ -149,7 +139,6 @@ mesh_descrips #Counts and frequencies of mesh descriptors
 semantics #Counts and frequencies of semantic types
 plot(bar(x=mesh_descrips[1:25,:mesh_descriptor], y=mesh_descrips[1:25,:freq])) #Top 25 mesh descriptors
 plot(bar(x=semantics[1:10,:semantic_type], y=semantics[1:10,:freq])) #Top 10 semantic types
-#apriori2(itemsets, .01, .01, 1, 3, 0) #association rules for data
 length(mesh_descrips_filtered[:,:mesh_descriptor]) #Number of unique mesh descriptors after filtering
 mesh_descrips_filtered #Counts and frequencies of mesh descriptors after filtering
 plot(bar(x=mesh_descrips_filtered[1:25,:mesh_descriptor], y=mesh_descrips_filtered[1:25,:freq])) #Top 25 mesh descriptors after filtering
