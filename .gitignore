@@ -1,2 +1,2 @@
-./Data/Adult/ItemsetsFiltered.csv
-./Data/Pediatric/ItemsetsFiltered.csv
+*.ItemsetsFiltered.csv
+*.ItemsetsFiltered.csv
