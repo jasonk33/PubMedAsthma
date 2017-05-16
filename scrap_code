@@ -1,0 +1,249 @@
+using BioMedQuery
+pass =
+
+
+credentials = Credentials("jasonk33", pass)
+tgt = get_tgt(credentials)
+term = "obesity"
+query = Dict("string"=>term, "searchType"=>"exact" )
+all_results= search_umls(tgt, query)
+
+
+email= "jason_katz@brown.edu"
+search_term="(obesity[MeSH Major Topic]) AND (\"2010\"[Date - Publication] : \"2012\"[Date - Publication])"
+max_articles = 20
+overwrite=true
+verbose = false
+
+results_dir = "./results"
+if !isdir(results_dir)
+    mkdir(results_dir)
+end
+
+    host="Jasons-MacBook-Air-2.local" #If want to hide - use enviroment variables instead
+    mysql_usr="jasonk33"
+    #mysql_pswd=""
+    dbname="pubmed_obesity_2010_2012"
+    config = Dict(:host=>host,
+                     :dbname=>dbname,
+                     :username=>mysql_usr,
+                     :pswd=>mysql_pswd,
+                     :overwrite=>overwrite)
+    save_func = save_efetch_mysql
+
+@time begin
+    db = pubmed_search_and_save(email, search_term, max_articles,
+    save_func, config, verbose)
+end
+
+using MySQL
+con = mysql_connect(host, mysql_usr, mysql_pswd, dbname)
+using DataFrames
+using DataStructures
+mysql_execute(con, "SHOW TABLES;")
+
+article = mysql_execute(con, "SELECT * FROM article;")
+
+author = mysql_execute(con, "SELECT * FROM author;")
+
+author2article = mysql_execute(con, "SELECT * FROM author2article;")
+
+mesh_descriptor = mysql_execute(con, "SELECT * FROM mesh_descriptor;")
+
+mesh_heading = mysql_execute(con, "SELECT * FROM mesh_heading;")
+
+mesh_qualifier = mysql_execute(con, "SELECT * FROM mesh_qualifier;")
+
+rename!(mesh_descriptor, :id, :did)
+rename!(mesh_descriptor, :name, :mesh_descriptor)
+
+data = sort(join(mesh_descriptor, mesh_heading, on = :did)[:,[:mesh_descriptor, :pmid]], cols=:pmid)
+
+occur = sort(collect(zip(values(countmap(data[:mesh_descriptor])),keys(countmap(data[:mesh_descriptor])))),rev=true)
+
+using BioMedQuery.Processes
+using BioMedQuery.UMLS
+append = false
+@time begin
+    map_mesh_to_umls_async!(db, credentials; append_results=append)
+end
+
+using BioMedQuery.DBUtils
+
+db_query(con, "SELECT * FROM author;")
+
+
+mysql_execute(con, "SHOW TABLES;")
+
+
+
+
+mesh2umls = mysql_execute(con, "SELECT * FROM mesh2umls;")
+
+
+
+
+
+max_descrips = sum(mesh_heading[:pmid] .== mode(mesh_heading[:pmid]))
+test = DataFrame(AbstractString,0,max_descrips)
+for i in 1:length(arts)
+    transaction = convert(Array{AbstractString}, unique(data[1][data[:pmid].==arts[i],1]))
+    dat = DataArray(AbstractString, max_descrips)
+    dat[1:length(transaction)] = transaction
+    push!(test, dat)
+end
+for i in 1:length(test)
+    test[ isna(test[:,i]), i] = " "
+end
+
+
+apriori(test[1:5,1:16], .4, .5)
+
+
+
+
+groceries = ["milk", "bread", "eggs", "apples", "oranges", "beer"]
+transacts = [sample(groceries, 4, replace = false) for x in 1:1000]
+transacts_df = DataFrame(transactions(transacts))
+apriori(transacts_df[1:10,:], .4, .5)
+
+
+
+
+
+######################################functions###########################
+
+using BioMedQuery.Processes
+using BioMedQuery.Entrez
+using MySQL
+using DataFrames
+using StatsBase
+using RCall
+
+email= "jason_katz@brown.edu"
+host="Jasons-MacBook-Air-2.local"
+mysql_usr="jasonk33"
+
+function search_and_related(MeSH_Major_Topic, MeSH_Term_1="none", MeSH_Term_2="none" ; num_articles=20, year_start=2000, year_end=2017)
+    #using BioMedQuery.Processes
+    #using BioMedQuery.Entrez
+    #using MySQL
+    #using DataFrames
+    #using StatsBase
+    if year_start > year_end
+      error("Starting year must be before ending year")
+    end
+    if (MeSH_Term_1 == "none") & (MeSH_Term_2 != "none")
+      error("Enter MeSH Term 1 before MeSH Term 2")
+    end
+    if MeSH_Term_1 == "none"
+      search_term="($MeSH_Major_Topic[MeSH Major Topic]) AND (\"$year_start\"[Date - Publication] : \"$year_end\"[Date - Publication])"
+    elseif MeSH_Term_2 == "none"
+      search_term="(($MeSH_Major_Topic[MeSH Major Topic]) AND $MeSH_Term_1[MeSH Terms]) AND (\"$year_start\"[Date - Publication] : \"$year_end\"[Date - Publication])"
+    else
+      search_term="((($MeSH_Major_Topic[MeSH Major Topic]) AND $MeSH_Term_1[MeSH Terms]) AND $MeSH_Term_2[MeSH Terms]) AND (\"$year_start\"[Date - Publication] : \"$year_end\"[Date - Publication])"
+    end
+    overwrite=true
+    verbose = false
+    global email #Configure Locally Before
+    global host #Configure Locally Before
+    global mysql_usr #Configure Locally Before
+    mysql_pswd = ENV["MYSQL_PSWD"] #Configure Locally Before
+    dbname="pubmed_$MeSH_Major_Topic"
+    config = Dict(:host=>host,
+                     :dbname=>dbname,
+                     :username=>mysql_usr,
+                     :pswd=>mysql_pswd,
+                     :overwrite=>overwrite)
+    db=nothing
+    try
+        @time begin
+        db = pubmed_search_and_save(email, search_term, num_articles, save_efetch_mysql, config, verbose)
+        end
+    catch
+        error("Not enough articles matching criteria, either reduce the number of articles, or change some of the criteria")
+    end
+    #con = mysql_connect(host, mysql_usr, mysql_pswd, dbname)
+    mesh_descriptor = mysql_execute(db, "SELECT * FROM mesh_descriptor;")
+    mesh_heading = mysql_execute(db, "SELECT * FROM mesh_heading;")
+    rename!(mesh_descriptor, :id, :did)
+    rename!(mesh_descriptor, :name, :mesh_descriptor)
+    data = sort(join(mesh_descriptor, mesh_heading, on = :did)[:,[:mesh_descriptor, :pmid]], cols=:pmid)
+    occur = sort(collect(zip(values(countmap(data[:mesh_descriptor])),keys(countmap(data[:mesh_descriptor])))),rev=true)
+    #mysql_disconnect(con)
+    return [data, occur]
+end
+
+data = search_and_related("alcohol", num_articles=100)
+
+function arules(data ; support_min=.01, confidence_min=.6, lift_min=1.2, right_side = "none", left_side = "none", left_side_2 = "none")
+    #Get data using search_and_related function
+    #using DataFrames
+    #using RCall (requires R to be installed)
+    if (left_side == "none") & (left_side_2 != "none")
+      error("Must input first left side term before inputing a second left side term")
+    end
+    arts = unique(data[1][:pmid])
+    transaction = convert(Array{AbstractString}, unique(data[1][data[1][:pmid].==arts[1],1]))
+    descriptors = convert(Array{AbstractString}, unique(data[1][:mesh_descriptor]))
+    itemsets = DataFrame(Any, 0,length(descriptors))
+    names!(itemsets, [symbol(descriptors[i]) for i in 1:length(descriptors)])
+    for j = 1:length(arts)
+        contains=Vector(length(descriptors))
+    for i = 1:length(descriptors)
+        contain = Int(in(descriptors[i],convert(Array{AbstractString}, unique(data[1][data[1][:pmid].==arts[j],1]))))
+        contains[i] = contain
+    end
+      push!(itemsets, contains)
+    end
+    writetable("output.csv",itemsets)
+    R"library('arules')"
+    path = homedir()
+    @rput path
+    R"data_R = read.csv(paste(path, '/output.csv', sep = ''))"
+    R"iMat = as(as(data_R, 'matrix'),'itemMatrix')"
+    @rput support_min
+    @rput confidence_min
+    @rput lift_min
+    @rput right_side
+    @rput left_side
+    @rput left_side_2
+    R"rules <- apriori(iMat, parameter = list(support = support_min, confidence = confidence_min))"
+    if (right_side == "none") & (left_side == "none") & (left_side_2 == "none")
+      R"rules_sub = subset(rules, subset = lift > lift_min)"
+    elseif (right_side != "none") & (left_side != "none") & (left_side_2 != "none")
+      R"rules_sub = subset(rules, subset = rhs %in% right_side & lhs %in% left_side & lhs %in% left_side_2 & lift > lift_min)"
+    elseif (right_side != "none") & (left_side != "none") & (left_side_2 == "none")
+      R"rules_sub = subset(rules, subset = rhs %in% right_side & lhs %in% left_side & lift > lift_min)"
+    elseif (right_side !== "none") & (left_side == "none") & (left_side_2 == "none")
+      R"rules_sub = subset(rules, subset = rhs %in% right_side & lift > lift_min)"
+    elseif (right_side == "none") & (left_side !== "none") & (left_side_2 !== "none")
+      R"rules_sub = subset(rules, subset = lhs %in% left_side & lhs %in% left_side_2 & lift > lift_min)"
+    elseif (right_side == "none") & (left_side !== "none") & (left_side_2 == "none")
+      R"rules_sub = subset(rules, subset = lhs %in% left_side & lift > lift_min)"
+    else
+      error("Something is wrong with function")
+    end
+    R"num_rules = length(rules_sub)"
+    @rget num_rules
+    if num_rules == 0
+      error("No rules matching criteria, reduce minimum criteria in function call")
+    end
+    R"inspect(rules_sub)"
+end
+
+arules(data, support_min=.1, confidence_min=.25, lift_min=.6, left_side="middle.aged", left_side_2="adult", right_side="male")
+
+
+###############################################################################
+
+
+
+#using AssociationRules
+using StatsBase
+# for sample() function
+
+# simulate transactions
+groceries = ["milk", "bread", "eggs", "apples", "oranges", "beer"]
+transactions = [sample(groceries, 4, replace = false) for x in 1:1000]
+transactions_df = DataFrame(transactions')

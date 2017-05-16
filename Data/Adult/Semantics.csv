@@ -1,0 +1,122 @@
+"count","semantic_type","freq"
+"73397","Disease or Syndrome",1.0
+"23513","Human",1.0
+"35082","Age Group",0.9690809339514311
+"25095","Organism Attribute",0.81104070088887
+"18405","Population Group",0.7585165653042998
+"34267","Pharmacologic Substance",0.518266490877387
+"28676","Organic Chemical",0.4681240165015098
+"14397","Diagnostic Procedure",0.42095861863649897
+"11277","Research Activity",0.3398970782120529
+"9123","Quantitative Concept",0.251435376174882
+"7358","Therapeutic or Preventive Procedure",0.235997107982818
+"15059","Amino Acid, Peptide, or Protein",0.2330200314719517
+"8484","Biologically Active Substance",0.2034193850210522
+"5214","Organ or Tissue Function",0.1884914728022796
+"9945","Immunologic Factor",0.18525921830476758
+"6725","Pathologic Function",0.1683749415217114
+"5535","Body Part, Organ, or Organ Component",0.15544592353166334
+"5947","Hormone",0.14600433802577298
+"3665","Geographic Area",0.14094330795730023
+"3579","Finding",0.12622804406073235
+"3677","Laboratory Procedure",0.12035895036788159
+"5720","Cell",0.11627610258155063
+"2824","Temporal Concept",0.1132990260706843
+"2953","Clinical Attribute",0.10687704674010122
+"2930","Health Care Activity",0.09403308807893505
+"2234","Intellectual Product",0.08263513800876111
+"2009","Manufactured Object",0.07799940458469783
+"1985","Qualitative Concept",0.07774422659805214
+"1973","Organism Function",0.07710628163143793
+"2446","Body Substance",0.07651086632926467
+"1865","Individual Behavior",0.06515544592353166
+"1796","Inorganic Chemical",0.06222089907710628
+"1529","Indicator, Reagent, or Diagnostic Aid",0.059031174244035214
+"2422","Enzyme",0.05724492833751542
+"2162","Sign or Symptom",0.0566920426997831
+"1430","Idea or Concept",0.055926508739846045
+"1552","Injury or Poisoning",0.051035597329137074
+"1551","Hazardous or Poisonous Substance",0.04780334283162506
+"1490","Cell Function",0.04771828350274317
+"1686","Receptor",0.04078594819886871
+"1282","Element, Ion, or Isotope",0.039552587930081234
+"977","Animal",0.038489346319057545
+"958","Medical Device",0.03717092672138817
+"1368","Tissue",0.03593756645260069
+"897","Physiologic Function",0.03572491813039595
+"1125","Nucleic Acid, Nucleoside, or Nucleotide",0.03440649853272658
+"855","Natural Phenomenon or Process",0.03296048994173436
+"830","Molecular Function",0.03198230765959256
+"1467","Mental or Behavioral Dysfunction",0.031939777995151616
+"833","Occupational Activity",0.03172712967294688
+"715","Functional Concept",0.02981329477310424
+"813","Biomedical Occupation or Discipline",0.029515587122017607
+"763","Substance",0.027856930208820654
+"725","Daily or Recreational Activity",0.026921277591119806
+"918","Plant",0.026793688597796964
+"643","Group Attribute",0.02615574363118275
+"663","Educational Activity",0.02436949772466295
+"1529","Neoplastic Process",0.023008548462552632
+"646","Health Care Related Organization",0.022583251818143156
+"672","Mental Process",0.022413133160379364
+"582","Genetic Function",0.0218177178582061
+"561","Biomedical or Dental Material",0.02075447624718241
+"600","Social Behavior",0.020541827924977673
+"495","Phenomenon or Process",0.020541827924977673
+"597","Molecular Biology Research Technique",0.02037170926721388
+"594","Food",0.020286649938331985
+"510","Eukaryote",0.018585463360694086
+"614","Mammal",0.017734870071875134
+"446","Professional or Occupational Group",0.01603368349423723
+"383","Occupation or Discipline",0.01569344617870965
+"597","Antibiotic",0.0156509165142687
+"491","Body System",0.01446008590992217
+"460","Fungus",0.013396844298898482
+"366","Environmental Effect of Humans",0.012503721345638583
+"260","Nucleotide Sequence",0.010419767788032152
+"346","Bacterium",0.009654233828095096
+"208","Organization",0.008676051545953302
+"232","Chemical Viewed Functionally",0.008590992217071408
+"214","Governmental or Regulatory Activity",0.008293284565984774
+"259","Cell Component",0.00782545825713435
+"179","Behavior",0.007612809934929614
+"172","Biologic Function",0.007272572619402033
+"185","Gene or Genome",0.007059924297197295
+"174","Laboratory or Test Result",0.007059924297197295
+"170","Cell or Molecular Dysfunction",0.006634627652787819
+"199","Body Space or Junction",0.006166801343937396
+"180","Virus",0.005528856377323183
+"123","Activity",0.005188619061795603
+"198","Vitamin",0.00506103006847276
+"121","Spatial Concept",0.004975970739590865
+"131","Body Location or Region",0.004805852081827074
+"141","Chemical Viewed Structurally",0.004763322417386127
+"101","Machine Activity",0.004040318121890018
+"89","Patient or Disabled Group",0.003572491813039595
+"95","Chemical",0.0034874324841577
+"82","Research Device",0.0034449028197167525
+"83","Human-caused Phenomenon or Process",0.0033173138263939096
+"88","Family Group",0.0029345468464253817
+"117","Anatomical Abnormality",0.002806957853102539
+"92","Congenital Abnormality",0.0021690128864883256
+"35","Experimental Model of Disease",0.0013184195976693744
+"31","Amino Acid Sequence",0.0013184195976693744
+"33","Embryonic Structure",0.0011483009399055842
+"27","Group",0.0011057712754646365
+"27","Fish",0.001063241611023689
+"26","Regulation or Law",0.001063241611023689
+"36","Acquired Abnormality",0.0009781822821417938
+"21","Bird",0.0008931229532598987
+"23","Classification",0.0008080636243780037
+"19","Language",0.0008080636243780037
+"15","Professional Society",0.0005954153021732659
+"12","Self-help or Relief Organization",0.0005103559732913708
+"12","Organism",0.0005103559732913708
+"6","Reptile",0.0002551779866456854
+"5","Molecular Sequence",0.0002126483222047378
+"4","Conceptual Entity",0.00017011865776379024
+"3","Anatomical Structure",0.0001275889933228427
+"2","Physical Object",8.505932888189512e-5
+"2","Amphibian",8.505932888189512e-5
+"1","Event",4.252966444094756e-5
+"1","Carbohydrate Sequence",4.252966444094756e-5

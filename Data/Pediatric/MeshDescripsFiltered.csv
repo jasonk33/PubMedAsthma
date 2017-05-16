@@ -1,0 +1,1019 @@
+"count","mesh_descriptor","freq"
+"40104","asthma",0.9778917145200985
+"999","chronic disease",0.0398687448728466
+"971","acute disease",0.03978671041837572
+"1170","rhinitis, allergic, seasonal",0.03187038556193601
+"1015","bronchitis",0.03133716160787531
+"1245","dermatitis, atopic",0.030968006562756358
+"1182","respiratory tract infections",0.03088597210828548
+"1152","asthma, exercise-induced",0.028547990155865465
+"1115","bronchial hyperreactivity",0.028178835110746512
+"1050","rhinitis, allergic, perennial",0.02469237079573421
+"817","eczema",0.023256767842493847
+"740","rhinitis",0.019196062346185396
+"517","pneumonia",0.015258408531583265
+"594","status asthmaticus",0.01468416735028712
+"525","respiratory tract diseases",0.01431501230516817
+"471","cystic fibrosis",0.013740771123872026
+"471","airway obstruction",0.013412633305988516
+"468","obesity",0.011648892534864643
+"331","virus diseases",0.009023789991796555
+"311","bronchial spasm",0.009023789991796555
+"343","bronchiolitis",0.0081214109926169
+"333","respiratory syncytial virus infections",0.007793273174733388
+"265","lung diseases",0.007465135356849877
+"326","gastroesophageal reflux",0.007136997538966366
+"196","stress, psychological",0.006685808039376538
+"253","bronchiolitis, viral",0.006562756357670222
+"279","sinusitis",0.00623461853978671
+"183","urticaria",0.006029532403609516
+"233","conjunctivitis, allergic",0.0059885151763740775
+"162","psychophysiologic disorders",0.005496308449548811
+"216","respiration disorders",0.005455291222313372
+"180","eosinophilia",0.005455291222313372
+"215","influenza, human",0.0047169811320754715
+"165","diabetes mellitus, type 1",0.0047169811320754715
+"157","pregnancy complications",0.004675963904840033
+"131","bronchiectasis",0.0043888433141919606
+"137","otitis media",0.004019688269073011
+"134","lung diseases, obstructive",0.003937653814602133
+"96","syndrome",0.003937653814602133
+"135","child behavior disorders",0.003527481542247744
+"123","depression",0.003486464315012305
+"118","epilepsy",0.003486464315012305
+"117","bronchial diseases",0.003486464315012305
+"85","infant, premature",0.0034454470877768664
+"103","infection",0.0033634126333059885
+"106","bacterial infections",0.003199343724364233
+"103","conjunctivitis",0.003117309269893355
+"102","mental disorders",0.0029942575881870387
+"93","diabetes mellitus",0.0029942575881870387
+"108","attention deficit disorder with hyperactivity",0.0029122231337161608
+"102","common cold",0.002830188679245283
+"103","bronchopulmonary dysplasia",0.0027481542247744053
+"129","picornaviridae infections",0.0027071369975389665
+"75","pulmonary emphysema",0.0027071369975389665
+"77","tuberculosis, pulmonary",0.0026251025430680886
+"91","croup",0.0025430680885972106
+"67","rhinitis, allergic",0.002502050861361772
+"68","laryngitis",0.002255947497949139
+"82","sleep wake disorders",0.002173913043478261
+"62","respiratory distress syndrome, newborn",0.002173913043478261
+"62","tonsillitis",0.002091878589007383
+"94","milk hypersensitivity",0.0020098441345365054
+"74","pneumothorax",0.0020098441345365054
+"57","bronchopneumonia",0.0020098441345365054
+"77","adrenal insufficiency",0.0019278096800656275
+"50","immune system diseases",0.0018867924528301887
+"55","whooping cough",0.001804757998359311
+"84","anxiety disorders",0.001763740771123872
+"51","dental caries",0.001763740771123872
+"42","personality",0.0017227235438884332
+"58","neoplasms",0.0016817063166529942
+"49","substance-related disorders",0.0016817063166529942
+"65","anemia, sickle cell",0.0016406890894175555
+"70","pneumonia, mycoplasma",0.0015996718621821165
+"53","occupational diseases",0.0015996718621821165
+"39","korea",0.0015996718621821165
+"46","gastroenteritis",0.0015176374077112388
+"76","laryngeal diseases",0.0014766201804757998
+"49","tuberculosis",0.0014766201804757998
+"39","hypertension",0.001435602953240361
+"49","arthritis, juvenile",0.001394585726004922
+"63","depressive disorder",0.0013125512715340443
+"58","pulmonary eosinophilia",0.0013125512715340443
+"48","neurodermatitis",0.0013125512715340443
+"41","infant, newborn, diseases",0.0013125512715340443
+"40","cardiovascular diseases",0.0013125512715340443
+"34","skin diseases",0.0013125512715340443
+"57","vitamin d deficiency",0.0012715340442986053
+"48","pulmonary disease, chronic obstructive",0.0012715340442986053
+"40","communicable diseases",0.0012715340442986053
+"32","gastrointestinal diseases",0.0012715340442986053
+"47","chickenpox",0.0012305168170631665
+"40","pharyngitis",0.0012305168170631665
+"45","chlamydia infections",0.0011894995898277276
+"36","learning disorders",0.0011894995898277276
+"36","colitis, ulcerative",0.0011894995898277276
+"38","measles",0.0011484823625922888
+"36","diseases in twins",0.0011484823625922888
+"31","rheumatic fever",0.0011484823625922888
+"29","dermatitis",0.0011484823625922888
+"47","ascariasis",0.0011074651353568498
+"36","immunologic deficiency syndromes",0.0011074651353568498
+"43","developmental disabilities",0.001066447908121411
+"38","migraine disorders",0.001066447908121411
+"36","sudden infant death",0.001066447908121411
+"34","heart diseases",0.001066447908121411
+"53","tracheal neoplasms",0.001025430680885972
+"34","nephrotic syndrome",0.001025430680885972
+"33","dermatitis, contact",0.001025430680885972
+"25","pulmonary fibrosis",0.001025430680885972
+"49","pneumonia, bacterial",0.0009844134536505333
+"42","sleep apnea syndromes",0.0009433962264150943
+"28","intellectual disability",0.0009433962264150943
+"24","infant, very low birth weight",0.0009433962264150943
+"50","aspergillosis, allergic bronchopulmonary",0.0009023789991796555
+"36","sleep apnea, obstructive",0.0009023789991796555
+"33","agammaglobulinemia",0.0009023789991796555
+"29","respirovirus infections",0.0009023789991796555
+"27","poliomyelitis",0.0009023789991796555
+"41","paramyxoviridae infections",0.0008613617719442166
+"41","churg-strauss syndrome",0.0008613617719442166
+"35","chlamydophila infections",0.0008203445447087777
+"27","pneumonia, viral",0.0008203445447087777
+"21","streptococcal infections",0.0008203445447087777
+"20","alpha 1-antitrypsin deficiency",0.0008203445447087777
+"34","tracheal stenosis",0.0007793273174733388
+"34","helminthiasis",0.0007793273174733388
+"26","autoimmune diseases",0.0007793273174733388
+"25","heart arrest",0.0007793273174733388
+"22","child abuse",0.0007793273174733388
+"31","bronchitis, chronic",0.0007383100902378999
+"29","otitis media with effusion",0.0007383100902378999
+"29","mycoplasma infections",0.0007383100902378999
+"24","staphylococcal infections",0.0007383100902378999
+"23","celiac disease",0.0007383100902378999
+"22","leukemia",0.0007383100902378999
+"20","violence",0.0007383100902378999
+"31","infant, premature, diseases",0.000697292863002461
+"29","mediastinal neoplasms",0.000697292863002461
+"26","nasal polyps",0.000697292863002461
+"25","drug eruptions",0.000697292863002461
+"23","pregnancy complications, infectious",0.000697292863002461
+"23","lung neoplasms",0.000697292863002461
+"21","urinary tract infections",0.000697292863002461
+"20","pneumonia, aspiration",0.000697292863002461
+"19","enuresis",0.000697292863002461
+"18","neurotic disorders",0.000697292863002461
+"30","bronchial neoplasms",0.0006562756357670221
+"29","autistic disorder",0.0006562756357670221
+"24","lung diseases, fungal",0.0006562756357670221
+"21","respiratory distress syndrome, adult",0.0006562756357670221
+"21","igg deficiency",0.0006562756357670221
+"21","dysgammaglobulinemia",0.0006562756357670221
+"20","parasitic diseases",0.0006562756357670221
+"24","pneumococcal infections",0.0006152584085315833
+"17","heart failure",0.0006152584085315833
+"16","arthritis, rheumatoid",0.0006152584085315833
+"15","disease",0.0006152584085315833
+"33","toxocariasis",0.0005742411812961444
+"21","mycoses",0.0005742411812961444
+"20","crohn disease",0.0005742411812961444
+"19","hypoglycemia",0.0005742411812961444
+"18","tracheitis",0.0005742411812961444
+"17","otitis",0.0005742411812961444
+"17","acidosis, respiratory",0.0005742411812961444
+"16","ciliary motility disorders",0.0005742411812961444
+"15","anemia",0.0005742411812961444
+"29","peanut hypersensitivity",0.0005332239540607055
+"23","helicobacter infections",0.0005332239540607055
+"22","precursor cell lymphoblastic leukemia-lymphoma",0.0005332239540607055
+"22","community-acquired infections",0.0005332239540607055
+"21","environmental illness",0.0005332239540607055
+"21","egg hypersensitivity",0.0005332239540607055
+"19","nervous system diseases",0.0005332239540607055
+"15","substance withdrawal syndrome",0.0005332239540607055
+"14","cerebral palsy",0.0005332239540607055
+"25","intestinal diseases, parasitic",0.0004922067268252667
+"18","pediatric obesity",0.0004922067268252667
+"18","dermatitis, allergic contact",0.0004922067268252667
+"17","nutrition disorders",0.0004922067268252667
+"17","laryngismus",0.0004922067268252667
+"17","kidney diseases",0.0004922067268252667
+"16","down syndrome",0.0004922067268252667
+"16","dehydration",0.0004922067268252667
+"14","personality disorders",0.0004922067268252667
+"12","depression, chemical",0.0004922067268252667
+"12","cushing syndrome",0.0004922067268252667
+"18","hiv infections",0.00045118949958982774
+"17","middle lobe syndrome",0.00045118949958982774
+"17","hyaline membrane disease",0.00045118949958982774
+"15","osteoporosis",0.00045118949958982774
+"15","failure to thrive",0.00045118949958982774
+"14","inflammatory bowel diseases",0.00045118949958982774
+"14","iga deficiency",0.00045118949958982774
+"14","hearing disorders",0.00045118949958982774
+"13","gingivitis",0.00045118949958982774
+"17","esophagitis",0.00041017227235438887
+"16","paranasal sinus diseases",0.00041017227235438887
+"15","ear diseases",0.00041017227235438887
+"15","cognition disorders",0.00041017227235438887
+"15","alveolitis, extrinsic allergic",0.00041017227235438887
+"14","anxiety, separation",0.00041017227235438887
+"13","pulmonary heart disease",0.00041017227235438887
+"13","pulmonary edema",0.00041017227235438887
+"13","pneumonia, staphylococcal",0.00041017227235438887
+"12","dental plaque",0.00041017227235438887
+"11","nose diseases",0.00041017227235438887
+"10","peptic ulcer",0.00041017227235438887
+"10","obstetric labor complications",0.00041017227235438887
+"10","meningitis",0.00041017227235438887
+"10","infant, small for gestational age",0.00041017227235438887
+"10","hyperkinesis",0.00041017227235438887
+"10","arthritis",0.00041017227235438887
+"10","adiposity",0.00041017227235438887
+"17","tracheal diseases",0.00036915504511894994
+"16","otorhinolaryngologic diseases",0.00036915504511894994
+"15","metabolic syndrome x",0.00036915504511894994
+"14","kartagener syndrome",0.00036915504511894994
+"14","epiglottitis",0.00036915504511894994
+"13","myocarditis",0.00036915504511894994
+"13","malocclusion",0.00036915504511894994
+"13","laryngostenosis",0.00036915504511894994
+"13","feeding and eating disorders",0.00036915504511894994
+"13","adenovirus infections, human",0.00036915504511894994
+"12","anorexia nervosa",0.00036915504511894994
+"11","endocrine system diseases",0.00036915504511894994
+"9","obstetric labor, premature",0.00036915504511894994
+"9","larynx",0.00036915504511894994
+"9","kidney failure, chronic",0.00036915504511894994
+"9","hypergammaglobulinemia",0.00036915504511894994
+"20","voice disorders",0.00032813781788351107
+"19","sick building syndrome",0.00032813781788351107
+"18","panic disorder",0.00032813781788351107
+"17","esophageal achalasia",0.00032813781788351107
+"15","lung diseases, interstitial",0.00032813781788351107
+"14","aspergillosis",0.00032813781788351107
+"14","acidosis, lactic",0.00032813781788351107
+"13","neuromuscular diseases",0.00032813781788351107
+"12","sepsis",0.00032813781788351107
+"12","mood disorders",0.00032813781788351107
+"12","bronchiolitis obliterans",0.00032813781788351107
+"11","candidiasis",0.00032813781788351107
+"10","speech disorders",0.00032813781788351107
+"10","psychoses, substance-induced",0.00032813781788351107
+"10","phobic disorders",0.00032813781788351107
+"10","hemosiderosis",0.00032813781788351107
+"10","coronary disease",0.00032813781788351107
+"9","stomach ulcer",0.00032813781788351107
+"8","purpura",0.00032813781788351107
+"8","liver diseases",0.00032813781788351107
+"14","laryngeal neoplasms",0.0002871205906480722
+"13","adjustment disorders",0.0002871205906480722
+"12","tobacco use disorder",0.0002871205906480722
+"12","status epilepticus",0.0002871205906480722
+"12","pneumopericardium",0.0002871205906480722
+"12","carcinoid tumor",0.0002871205906480722
+"11","psoriasis",0.0002871205906480722
+"9","somatoform disorders",0.0002871205906480722
+"9","pneumonia, pneumococcal",0.0002871205906480722
+"8","rubella",0.0002871205906480722
+"8","myocardial infarction",0.0002871205906480722
+"8","mite infestations",0.0002871205906480722
+"8","fetal diseases",0.0002871205906480722
+"7","hypothyroidism",0.0002871205906480722
+"7","hepatitis a",0.0002871205906480722
+"7","hematologic diseases",0.0002871205906480722
+"7","encephalitis",0.0002871205906480722
+"7","critical illness",0.0002871205906480722
+"7","coma",0.0002871205906480722
+"7","candidiasis, oral",0.0002871205906480722
+"7","blood protein disorders",0.0002871205906480722
+"7","appendicitis",0.0002871205906480722
+"13","depressive disorder, major",0.00024610336341263333
+"12","papilloma",0.00024610336341263333
+"12","larva migrans, visceral",0.00024610336341263333
+"12","enterobiasis",0.00024610336341263333
+"11","stress disorders, post-traumatic",0.00024610336341263333
+"10","haemophilus infections",0.00024610336341263333
+"10","adenoviridae infections",0.00024610336341263333
+"9","gastritis",0.00024610336341263333
+"9","diphtheria",0.00024610336341263333
+"9","diabetes mellitus, type 2",0.00024610336341263333
+"9","autonomic nervous system diseases",0.00024610336341263333
+"8","vasculitis",0.00024610336341263333
+"8","seizures, febrile",0.00024610336341263333
+"8","rickets",0.00024610336341263333
+"8","pulmonary embolism",0.00024610336341263333
+"8","lymphatic diseases",0.00024610336341263333
+"8","brain diseases",0.00024610336341263333
+"7","rheumatic diseases",0.00024610336341263333
+"7","pyelonephritis",0.00024610336341263333
+"7","muscular diseases",0.00024610336341263333
+"7","lupus erythematosus, systemic",0.00024610336341263333
+"7","deglutition disorders",0.00024610336341263333
+"7","central nervous system diseases",0.00024610336341263333
+"6","stuttering",0.00024610336341263333
+"6","rheumatic heart disease",0.00024610336341263333
+"6","muscular dystrophies",0.00024610336341263333
+"6","collagen diseases",0.00024610336341263333
+"6","colitis",0.00024610336341263333
+"6","adrenal hyperplasia, congenital",0.00024610336341263333
+"13","vocal cord paralysis",0.00020508613617719443
+"11","nut hypersensitivity",0.00020508613617719443
+"10","tooth erosion",0.00020508613617719443
+"10","intestinal diseases",0.00020508613617719443
+"9","strongyloidiasis",0.00020508613617719443
+"9","mediastinal diseases",0.00020508613617719443
+"9","antisocial personality disorder",0.00020508613617719443
+"9","addison disease",0.00020508613617719443
+"9","acute chest syndrome",0.00020508613617719443
+"8","sleep initiation and maintenance disorders",0.00020508613617719443
+"8","sarcoidosis",0.00020508613617719443
+"8","protein-losing enteropathies",0.00020508613617719443
+"8","metabolic diseases",0.00020508613617719443
+"8","lymphoma",0.00020508613617719443
+"8","lung diseases, parasitic",0.00020508613617719443
+"8","ethmoid sinusitis",0.00020508613617719443
+"8","anemia, iron-deficiency",0.00020508613617719443
+"7","tetanus",0.00020508613617719443
+"7","serum sickness",0.00020508613617719443
+"7","psychotic disorders",0.00020508613617719443
+"7","phenylketonurias",0.00020508613617719443
+"7","parvoviridae infections",0.00020508613617719443
+"7","mouth diseases",0.00020508613617719443
+"7","maxillary sinusitis",0.00020508613617719443
+"7","malnutrition",0.00020508613617719443
+"7","hookworm infections",0.00020508613617719443
+"7","herpes zoster",0.00020508613617719443
+"7","herpes simplex",0.00020508613617719443
+"7","enteritis",0.00020508613617719443
+"7","cysts",0.00020508613617719443
+"7","brain damage, chronic",0.00020508613617719443
+"7","alcoholism",0.00020508613617719443
+"7","adrenal gland diseases",0.00020508613617719443
+"6","thoracic diseases",0.00020508613617719443
+"6","meconium aspiration syndrome",0.00020508613617719443
+"6","hemophilia a",0.00020508613617719443
+"6","facial dermatoses",0.00020508613617719443
+"6","dyskinesia, drug-induced",0.00020508613617719443
+"5","speech therapy",0.00020508613617719443
+"5","prurigo",0.00020508613617719443
+"5","pneumonia, pneumocystis",0.00020508613617719443
+"5","periodontal diseases",0.00020508613617719443
+"5","nephrosis",0.00020508613617719443
+"5","hyperglycemia",0.00020508613617719443
+"5","eye diseases",0.00020508613617719443
+"5","congenital hypothyroidism",0.00020508613617719443
+"11","neurilemmoma",0.00016406890894175554
+"11","magnesium deficiency",0.00016406890894175554
+"10","paraplegia",0.00016406890894175554
+"8","job syndrome",0.00016406890894175554
+"8","eosinophilic esophagitis",0.00016406890894175554
+"7","tachycardia, supraventricular",0.00016406890894175554
+"7","pharyngeal diseases",0.00016406890894175554
+"7","hyperthyroidism",0.00016406890894175554
+"7","dyslexia",0.00016406890894175554
+"7","diabetic ketoacidosis",0.00016406890894175554
+"7","dental enamel hypoplasia",0.00016406890894175554
+"7","cardiomyopathies",0.00016406890894175554
+"7","acute kidney injury",0.00016406890894175554
+"6","spouse abuse",0.00016406890894175554
+"6","neutropenia",0.00016406890894175554
+"6","hypothalamic diseases",0.00016406890894175554
+"6","hodgkin disease",0.00016406890894175554
+"6","hernia, hiatal",0.00016406890894175554
+"6","fatty liver",0.00016406890894175554
+"6","enterovirus",0.00016406890894175554
+"6","duodenal ulcer",0.00016406890894175554
+"6","deficiency diseases",0.00016406890894175554
+"6","bipolar disorder",0.00016406890894175554
+"6","acquired immunodeficiency syndrome",0.00016406890894175554
+"5","tracheomalacia",0.00016406890894175554
+"5","tic disorders",0.00016406890894175554
+"5","thymus hyperplasia",0.00016406890894175554
+"5","pseudomonas infections",0.00016406890894175554
+"5","pericarditis",0.00016406890894175554
+"5","neurocognitive disorders",0.00016406890894175554
+"5","multiple sclerosis",0.00016406890894175554
+"5","infant nutrition disorders",0.00016406890894175554
+"5","hypogonadism",0.00016406890894175554
+"5","herpesviridae infections",0.00016406890894175554
+"5","hematuria",0.00016406890894175554
+"5","glomerulonephritis",0.00016406890894175554
+"5","giardiasis",0.00016406890894175554
+"5","focal infection",0.00016406890894175554
+"5","enterovirus infections",0.00016406890894175554
+"5","cholecystitis",0.00016406890894175554
+"5","cerebral infarction",0.00016406890894175554
+"5","brain neoplasms",0.00016406890894175554
+"5","biliary tract diseases",0.00016406890894175554
+"4","zoonoses",0.00016406890894175554
+"4","urination disorders",0.00016406890894175554
+"4","ulcer",0.00016406890894175554
+"4","tooth diseases",0.00016406890894175554
+"4","thrombocytopenia",0.00016406890894175554
+"4","schizophrenia",0.00016406890894175554
+"4","rare diseases",0.00016406890894175554
+"4","pleurisy",0.00016406890894175554
+"4","metabolism, inborn errors",0.00016406890894175554
+"4","leukopenia",0.00016406890894175554
+"4","infectious mononucleosis",0.00016406890894175554
+"4","fetal hypoxia",0.00016406890894175554
+"4","erythroblastosis, fetal",0.00016406890894175554
+"4","erythema",0.00016406890894175554
+"4","epilepsy, tonic-clonic",0.00016406890894175554
+"4","diabetes complications",0.00016406890894175554
+"4","denial (psychology)",0.00016406890894175554
+"4","colonic diseases, functional",0.00016406890894175554
+"4","asphyxia neonatorum",0.00016406890894175554
+"4","adrenocortical hyperfunction",0.00016406890894175554
+"4","adenoma",0.00016406890894175554
+"10","communicable diseases, emerging",0.00012305168170631667
+"9","lymphoma, large-cell, anaplastic",0.00012305168170631667
+"9","ectodermal dysplasia",0.00012305168170631667
+"9","asthma, aspirin-induced",0.00012305168170631667
+"8","anti-glomerular basement membrane disease",0.00012305168170631667
+"7","wheat hypersensitivity",0.00012305168170631667
+"7","pulmonary alveolar proteinosis",0.00012305168170631667
+"7","abscess",0.00012305168170631667
+"6","rhinitis, vasomotor",0.00012305168170631667
+"6","myocardial ischemia",0.00012305168170631667
+"6","lung abscess",0.00012305168170631667
+"6","laryngopharyngeal reflux",0.00012305168170631667
+"6","hypocalcemia",0.00012305168170631667
+"6","hypervitaminosis a",0.00012305168170631667
+"6","hepatitis, viral, human",0.00012305168170631667
+"6","granulomatosis with polyangiitis",0.00012305168170631667
+"6","glaucoma",0.00012305168170631667
+"6","esophageal diseases",0.00012305168170631667
+"6","empyema, pleural",0.00012305168170631667
+"6","cystitis",0.00012305168170631667
+"6","coronary artery disease",0.00012305168170631667
+"5","vitamin a deficiency",0.00012305168170631667
+"5","tourette syndrome",0.00012305168170631667
+"5","stroke",0.00012305168170631667
+"5","spinal diseases",0.00012305168170631667
+"5","pseudotumor cerebri",0.00012305168170631667
+"5","polyarteritis nodosa",0.00012305168170631667
+"5","orthomyxoviridae infections",0.00012305168170631667
+"5","opportunistic infections",0.00012305168170631667
+"5","ocular hypertension",0.00012305168170631667
+"5","obesity, morbid",0.00012305168170631667
+"5","nephritis, interstitial",0.00012305168170631667
+"5","nasopharyngitis",0.00012305168170631667
+"5","nail diseases",0.00012305168170631667
+"5","myasthenia gravis",0.00012305168170631667
+"5","lymphoma, non-hodgkin",0.00012305168170631667
+"5","hydrocephalus",0.00012305168170631667
+"5","esophagitis, peptic",0.00012305168170631667
+"5","dementia",0.00012305168170631667
+"5","child nutrition disorders",0.00012305168170631667
+"5","bone diseases, metabolic",0.00012305168170631667
+"5","biliary dyskinesia",0.00012305168170631667
+"5","asperger syndrome",0.00012305168170631667
+"5","aortic arch syndromes",0.00012305168170631667
+"4","pheochromocytoma",0.00012305168170631667
+"4","parotitis",0.00012305168170631667
+"4","neurocirculatory asthenia",0.00012305168170631667
+"4","mycobacterium infections",0.00012305168170631667
+"4","mumps",0.00012305168170631667
+"4","movement disorders",0.00012305168170631667
+"4","malabsorption syndromes",0.00012305168170631667
+"4","leukemia, myeloid, acute",0.00012305168170631667
+"4","jaundice, neonatal",0.00012305168170631667
+"4","filariasis",0.00012305168170631667
+"4","dermatitis, seborrheic",0.00012305168170631667
+"4","aortic valve stenosis",0.00012305168170631667
+"4","alkalosis",0.00012305168170631667
+"3","superinfection",0.00012305168170631667
+"3","sphenoid sinusitis",0.00012305168170631667
+"3","scleroderma, systemic",0.00012305168170631667
+"3","scarlet fever",0.00012305168170631667
+"3","respiratory tract neoplasms",0.00012305168170631667
+"3","pregnancy in diabetics",0.00012305168170631667
+"3","pleural effusion",0.00012305168170631667
+"3","osteoarthropathy, secondary hypertrophic",0.00012305168170631667
+"3","nephritis",0.00012305168170631667
+"3","meningococcal infections",0.00012305168170631667
+"3","meningitis, bacterial",0.00012305168170631667
+"3","malaria",0.00012305168170631667
+"3","lymphadenitis",0.00012305168170631667
+"3","legionnaires' disease",0.00012305168170631667
+"3","hysteria",0.00012305168170631667
+"3","hypercholesterolemia",0.00012305168170631667
+"3","hirschsprung disease",0.00012305168170631667
+"3","hand dermatoses",0.00012305168170631667
+"3","hallucinations",0.00012305168170631667
+"3","enterocolitis",0.00012305168170631667
+"3","empyema",0.00012305168170631667
+"3","dwarfism, pituitary",0.00012305168170631667
+"3","dermatomyositis",0.00012305168170631667
+"3","dermatitis, toxicodendron",0.00012305168170631667
+"3","connective tissue diseases",0.00012305168170631667
+"3","child development disorders, pervasive",0.00012305168170631667
+"3","carcinoma, bronchogenic",0.00012305168170631667
+"3","avitaminosis",0.00012305168170631667
+"3","arthus reaction",0.00012305168170631667
+"3","anemia, hypochromic",0.00012305168170631667
+"8","chronobiology disorders",8.203445447087777e-5
+"7","tracheobronchomalacia",8.203445447087777e-5
+"6","olfaction disorders",8.203445447087777e-5
+"6","lymphoma, b-cell",8.203445447087777e-5
+"6","ganglioneuroma",8.203445447087777e-5
+"5","viremia",8.203445447087777e-5
+"5","pneumovirus infections",8.203445447087777e-5
+"5","pneumoperitoneum",8.203445447087777e-5
+"5","leukemia, radiation-induced",8.203445447087777e-5
+"5","hypopituitarism",8.203445447087777e-5
+"5","hyperbilirubinemia, neonatal",8.203445447087777e-5
+"5","disorders of excessive somnolence",8.203445447087777e-5
+"5","dermatitis, perioral",8.203445447087777e-5
+"5","bone diseases, developmental",8.203445447087777e-5
+"5","atherosclerosis",8.203445447087777e-5
+"5","aortic aneurysm",8.203445447087777e-5
+"5","agricultural workers' diseases",8.203445447087777e-5
+"4","stomatitis, herpetic",8.203445447087777e-5
+"4","sleep disorders, intrinsic",8.203445447087777e-5
+"4","skin neoplasms",8.203445447087777e-5
+"4","paranasal sinus neoplasms",8.203445447087777e-5
+"4","obesity hypoventilation syndrome",8.203445447087777e-5
+"4","munchausen syndrome by proxy",8.203445447087777e-5
+"4","intracranial hemorrhages",8.203445447087777e-5
+"4","hepatitis",8.203445447087777e-5
+"4","hemoglobinopathies",8.203445447087777e-5
+"4","heart block",8.203445447087777e-5
+"4","head and neck neoplasms",8.203445447087777e-5
+"4","granuloma annulare",8.203445447087777e-5
+"4","granular cell tumor",8.203445447087777e-5
+"4","gram-positive bacterial infections",8.203445447087777e-5
+"4","fibrosarcoma",8.203445447087777e-5
+"4","fatigue syndrome, chronic",8.203445447087777e-5
+"4","epstein-barr virus infections",8.203445447087777e-5
+"4","cryptogenic organizing pneumonia",8.203445447087777e-5
+"4","cardiomyopathy, dilated",8.203445447087777e-5
+"3","urologic diseases",8.203445447087777e-5
+"3","typhoid fever",8.203445447087777e-5
+"3","tetany",8.203445447087777e-5
+"3","temporomandibular joint disorders",8.203445447087777e-5
+"3","stomach neoplasms",8.203445447087777e-5
+"3","stevens-johnson syndrome",8.203445447087777e-5
+"3","reye syndrome",8.203445447087777e-5
+"3","polyneuropathies",8.203445447087777e-5
+"3","pneumoconiosis",8.203445447087777e-5
+"3","plasma cell granuloma, pulmonary",8.203445447087777e-5
+"3","pigmentation disorders",8.203445447087777e-5
+"3","pericardial effusion",8.203445447087777e-5
+"3","obsessive-compulsive disorder",8.203445447087777e-5
+"3","nevus",8.203445447087777e-5
+"3","lymphopenia",8.203445447087777e-5
+"3","lymphangiectasis, intestinal",8.203445447087777e-5
+"3","lung, hyperlucent",8.203445447087777e-5
+"3","leukemia, myeloid",8.203445447087777e-5
+"3","laurence-moon syndrome",8.203445447087777e-5
+"3","lactose intolerance",8.203445447087777e-5
+"3","kaposi varicelliform eruption",8.203445447087777e-5
+"3","impetigo",8.203445447087777e-5
+"3","ichthyosis vulgaris",8.203445447087777e-5
+"3","hypoxia-ischemia, brain",8.203445447087777e-5
+"3","hypopigmentation",8.203445447087777e-5
+"3","histoplasmosis",8.203445447087777e-5
+"3","exocrine pancreatic insufficiency",8.203445447087777e-5
+"3","endocarditis",8.203445447087777e-5
+"3","eclampsia",8.203445447087777e-5
+"3","dysentery",8.203445447087777e-5
+"3","diabetes, gestational",8.203445447087777e-5
+"3","conversion disorder",8.203445447087777e-5
+"3","cerebrospinal fluid rhinorrhea",8.203445447087777e-5
+"3","ascorbic acid deficiency",8.203445447087777e-5
+"2","water intoxication",8.203445447087777e-5
+"2","vitamin e deficiency",8.203445447087777e-5
+"2","vascular diseases",8.203445447087777e-5
+"2","uveitis",8.203445447087777e-5
+"2","turner syndrome",8.203445447087777e-5
+"2","tuberous sclerosis",8.203445447087777e-5
+"2","tics",8.203445447087777e-5
+"2","thyroiditis, autoimmune",8.203445447087777e-5
+"2","thyroid diseases",8.203445447087777e-5
+"2","thymoma",8.203445447087777e-5
+"2","tachycardia, paroxysmal",8.203445447087777e-5
+"2","stomatitis, aphthous",8.203445447087777e-5
+"2","spasms, infantile",8.203445447087777e-5
+"2","smallpox",8.203445447087777e-5
+"2","schizophrenia, childhood",8.203445447087777e-5
+"2","schistosomiasis",8.203445447087777e-5
+"2","salmonella infections",8.203445447087777e-5
+"2","renal insufficiency",8.203445447087777e-5
+"2","purpura, thrombocytopenic",8.203445447087777e-5
+"2","puberty, precocious",8.203445447087777e-5
+"2","pregnancy complications, cardiovascular",8.203445447087777e-5
+"2","pleural diseases",8.203445447087777e-5
+"2","photosensitivity disorders",8.203445447087777e-5
+"2","phagocyte bactericidal dysfunction",8.203445447087777e-5
+"2","peptic ulcer perforation",8.203445447087777e-5
+"2","papilledema",8.203445447087777e-5
+"2","nasopharyngeal diseases",8.203445447087777e-5
+"2","musculoskeletal diseases",8.203445447087777e-5
+"2","multiple myeloma",8.203445447087777e-5
+"2","mucocutaneous lymph node syndrome",8.203445447087777e-5
+"2","mitral valve prolapse",8.203445447087777e-5
+"2","marijuana abuse",8.203445447087777e-5
+"2","liver cirrhosis",8.203445447087777e-5
+"2","leukocyte disorders",8.203445447087777e-5
+"2","language development disorders",8.203445447087777e-5
+"2","joint diseases",8.203445447087777e-5
+"2","iridocyclitis",8.203445447087777e-5
+"2","infant, extremely low birth weight",8.203445447087777e-5
+"2","hyponatremia",8.203445447087777e-5
+"2","hypertrichosis",8.203445447087777e-5
+"2","hypernatremia",8.203445447087777e-5
+"2","hemangioma",8.203445447087777e-5
+"2","frontal sinusitis",8.203445447087777e-5
+"2","food-drug interactions",8.203445447087777e-5
+"2","familial mediterranean fever",8.203445447087777e-5
+"2","expressed emotion",8.203445447087777e-5
+"2","esophageal stenosis",8.203445447087777e-5
+"2","esophageal motility disorders",8.203445447087777e-5
+"2","erythema nodosum",8.203445447087777e-5
+"2","erythema multiforme",8.203445447087777e-5
+"2","epilepsy, temporal lobe",8.203445447087777e-5
+"2","endemic diseases",8.203445447087777e-5
+"2","dysautonomia, familial",8.203445447087777e-5
+"2","digestive system diseases",8.203445447087777e-5
+"2","dermatitis, occupational",8.203445447087777e-5
+"2","cytomegalovirus infections",8.203445447087777e-5
+"2","cytomegalovirus",8.203445447087777e-5
+"2","chromosome disorders",8.203445447087777e-5
+"2","chorea",8.203445447087777e-5
+"2","cat diseases",8.203445447087777e-5
+"2","carcinoma, adenoid cystic",8.203445447087777e-5
+"2","bursitis",8.203445447087777e-5
+"2","breast neoplasms",8.203445447087777e-5
+"2","bone diseases",8.203445447087777e-5
+"2","barrett esophagus",8.203445447087777e-5
+"2","arteriosclerosis",8.203445447087777e-5
+"2","anorexia",8.203445447087777e-5
+"2","anemia, aplastic",8.203445447087777e-5
+"2","akathisia, drug-induced",8.203445447087777e-5
+"2","acne vulgaris",8.203445447087777e-5
+"5","germinoma",4.1017227235438884e-5
+"4","neoplasms, muscle tissue",4.1017227235438884e-5
+"4","keratoconjunctivitis",4.1017227235438884e-5
+"4","glomerulosclerosis, focal segmental",4.1017227235438884e-5
+"4","bird fancier's lung",4.1017227235438884e-5
+"3","wiskott-aldrich syndrome",4.1017227235438884e-5
+"3","tuberculosis, spinal",4.1017227235438884e-5
+"3","thrombocytosis",4.1017227235438884e-5
+"3","tachycardia, ectopic atrial",4.1017227235438884e-5
+"3","subacute sclerosing panencephalitis",4.1017227235438884e-5
+"3","scleroderma, localized",4.1017227235438884e-5
+"3","rhinoscleroma",4.1017227235438884e-5
+"3","retropharyngeal abscess",4.1017227235438884e-5
+"3","pregnancy complications, parasitic",4.1017227235438884e-5
+"3","osteoarthropathy, primary hypertrophic",4.1017227235438884e-5
+"3","onchocerciasis",4.1017227235438884e-5
+"3","nevus, pigmented",4.1017227235438884e-5
+"3","myositis",4.1017227235438884e-5
+"3","muscular dystrophy, duchenne",4.1017227235438884e-5
+"3","molluscum contagiosum",4.1017227235438884e-5
+"3","malaria, falciparum",4.1017227235438884e-5
+"3","lymphoproliferative disorders",4.1017227235438884e-5
+"3","lyme disease",4.1017227235438884e-5
+"3","leukemia-lymphoma, adult t-cell",4.1017227235438884e-5
+"3","isolated noncompaction of the ventricular myocardium",4.1017227235438884e-5
+"3","hyperlipidemias",4.1017227235438884e-5
+"3","hypereosinophilic syndrome",4.1017227235438884e-5
+"3","hamartoma",4.1017227235438884e-5
+"3","female urogenital diseases",4.1017227235438884e-5
+"3","epilepsies, myoclonic",4.1017227235438884e-5
+"3","dysthymic disorder",4.1017227235438884e-5
+"3","cytomegalovirus retinitis",4.1017227235438884e-5
+"3","conjunctivitis, bacterial",4.1017227235438884e-5
+"3","colonic neoplasms",4.1017227235438884e-5
+"3","bulimia",4.1017227235438884e-5
+"3","behcet syndrome",4.1017227235438884e-5
+"3","asthma, occupational",4.1017227235438884e-5
+"3","adenocarcinoma, mucinous",4.1017227235438884e-5
+"2","taste disorders",4.1017227235438884e-5
+"2","subarachnoid hemorrhage",4.1017227235438884e-5
+"2","spinal cord diseases",4.1017227235438884e-5
+"2","severe combined immunodeficiency",4.1017227235438884e-5
+"2","schizophrenia, paranoid",4.1017227235438884e-5
+"2","sarcoma, ewing",4.1017227235438884e-5
+"2","sarcoma",4.1017227235438884e-5
+"2","rothmund-thomson syndrome",4.1017227235438884e-5
+"2","root resorption",4.1017227235438884e-5
+"2","rna virus infections",4.1017227235438884e-5
+"2","reactive attachment disorder",4.1017227235438884e-5
+"2","quadriplegia",4.1017227235438884e-5
+"2","purpura, thrombocytopenic, idiopathic",4.1017227235438884e-5
+"2","protein s deficiency",4.1017227235438884e-5
+"2","polycystic ovary syndrome",4.1017227235438884e-5
+"2","pleural neoplasms",4.1017227235438884e-5
+"2","parkinson disease",4.1017227235438884e-5
+"2","paraganglioma",4.1017227235438884e-5
+"2","oxyuriasis",4.1017227235438884e-5
+"2","neurofibroma",4.1017227235438884e-5
+"2","neuroblastoma",4.1017227235438884e-5
+"2","neurasthenia",4.1017227235438884e-5
+"2","nephritis, hereditary",4.1017227235438884e-5
+"2","neoplasms, second primary",4.1017227235438884e-5
+"2","myotonic dystrophy",4.1017227235438884e-5
+"2","myopia",4.1017227235438884e-5
+"2","mucormycosis",4.1017227235438884e-5
+"2","mucoepidermoid tumor",4.1017227235438884e-5
+"2","motor neuron disease",4.1017227235438884e-5
+"2","moraxellaceae infections",4.1017227235438884e-5
+"2","methicillin-resistant staphylococcus aureus",4.1017227235438884e-5
+"2","meningeal neoplasms",4.1017227235438884e-5
+"2","long qt syndrome",4.1017227235438884e-5
+"2","lipoma",4.1017227235438884e-5
+"2","lipodystrophy",4.1017227235438884e-5
+"2","lipid metabolism, inborn errors",4.1017227235438884e-5
+"2","leukoencephalitis, acute hemorrhagic",4.1017227235438884e-5
+"2","leiomyosarcoma",4.1017227235438884e-5
+"2","infratentorial neoplasms",4.1017227235438884e-5
+"2","ichthyosis, x-linked",4.1017227235438884e-5
+"2","hypokalemic periodic paralysis",4.1017227235438884e-5
+"2","hypertrophy, right ventricular",4.1017227235438884e-5
+"2","hyperammonemia",4.1017227235438884e-5
+"2","hymenolepiasis",4.1017227235438884e-5
+"2","hydronephrosis",4.1017227235438884e-5
+"2","histiocytoma, benign fibrous",4.1017227235438884e-5
+"2","heart valve diseases",4.1017227235438884e-5
+"2","headache disorders",4.1017227235438884e-5
+"2","hamartoma syndrome, multiple",4.1017227235438884e-5
+"2","hair diseases",4.1017227235438884e-5
+"2","gonadal disorders",4.1017227235438884e-5
+"2","goiter, endemic",4.1017227235438884e-5
+"2","glucose metabolism disorders",4.1017227235438884e-5
+"2","glossitis, benign migratory",4.1017227235438884e-5
+"2","glomerulonephritis, membranoproliferative",4.1017227235438884e-5
+"2","gas gangrene",4.1017227235438884e-5
+"2","gallbladder diseases",4.1017227235438884e-5
+"2","gait disorders, neurologic",4.1017227235438884e-5
+"2","fetal nutrition disorders",4.1017227235438884e-5
+"2","erythema infectiosum",4.1017227235438884e-5
+"2","epilepsy, absence",4.1017227235438884e-5
+"2","dyslipidemias",4.1017227235438884e-5
+"2","dna virus infections",4.1017227235438884e-5
+"2","diffuse cerebral sclerosis of schilder",4.1017227235438884e-5
+"2","conjunctivitis, inclusion",4.1017227235438884e-5
+"2","common bile duct diseases",4.1017227235438884e-5
+"2","coinfection",4.1017227235438884e-5
+"2","clostridium infections",4.1017227235438884e-5
+"2","chalazion",4.1017227235438884e-5
+"2","cerebrovascular disorders",4.1017227235438884e-5
+"2","carcinoma, mucoepidermoid",4.1017227235438884e-5
+"2","carcinoma",4.1017227235438884e-5
+"2","capillary leak syndrome",4.1017227235438884e-5
+"2","candidiasis, vulvovaginal",4.1017227235438884e-5
+"2","brain ischemia",4.1017227235438884e-5
+"2","brachial plexus neuritis",4.1017227235438884e-5
+"2","bordetella infections",4.1017227235438884e-5
+"2","blepharitis",4.1017227235438884e-5
+"2","beta-thalassemia",4.1017227235438884e-5
+"2","atrial fibrillation",4.1017227235438884e-5
+"2","ataxia telangiectasia",4.1017227235438884e-5
+"2","ascaridiasis",4.1017227235438884e-5
+"2","apraxias",4.1017227235438884e-5
+"2","adrenal gland neoplasms",4.1017227235438884e-5
+"1","xanthomatosis",4.1017227235438884e-5
+"1","x-linked combined immunodeficiency diseases",4.1017227235438884e-5
+"1","wilms tumor",4.1017227235438884e-5
+"1","vulvar diseases",4.1017227235438884e-5
+"1","von willebrand diseases",4.1017227235438884e-5
+"1","vitiligo",4.1017227235438884e-5
+"1","vipoma",4.1017227235438884e-5
+"1","vesico-ureteral reflux",4.1017227235438884e-5
+"1","vasculitis, leukocytoclastic, cutaneous",4.1017227235438884e-5
+"1","vascular headaches",4.1017227235438884e-5
+"1","varicose ulcer",4.1017227235438884e-5
+"1","uterine cervical neoplasms",4.1017227235438884e-5
+"1","urinary bladder, neurogenic",4.1017227235438884e-5
+"1","urinary bladder diseases",4.1017227235438884e-5
+"1","tuberculosis, ocular",4.1017227235438884e-5
+"1","tuberculosis, meningeal",4.1017227235438884e-5
+"1","tuberculosis, lymph node",4.1017227235438884e-5
+"1","trichuriasis",4.1017227235438884e-5
+"1","toxoplasmosis",4.1017227235438884e-5
+"1","tinea",4.1017227235438884e-5
+"1","tick infestations",4.1017227235438884e-5
+"1","thromboangiitis obliterans",4.1017227235438884e-5
+"1","thalamic diseases",4.1017227235438884e-5
+"1","testicular neoplasms",4.1017227235438884e-5
+"1","teratoma",4.1017227235438884e-5
+"1","tendinopathy",4.1017227235438884e-5
+"1","tachycardia, ventricular",4.1017227235438884e-5
+"1","systemic inflammatory response syndrome",4.1017227235438884e-5
+"1","synovitis",4.1017227235438884e-5
+"1","superior vena cava syndrome",4.1017227235438884e-5
+"1","substance abuse, intravenous",4.1017227235438884e-5
+"1","stomach diseases",4.1017227235438884e-5
+"1","stereotyped behavior",4.1017227235438884e-5
+"1","staphylococcal skin infections",4.1017227235438884e-5
+"1","soft tissue neoplasms",4.1017227235438884e-5
+"1","skin diseases, infectious",4.1017227235438884e-5
+"1","sickle cell trait",4.1017227235438884e-5
+"1","sexually transmitted diseases",4.1017227235438884e-5
+"1","severe acute respiratory syndrome",4.1017227235438884e-5
+"1","sensation disorders",4.1017227235438884e-5
+"1","schistosomiasis mansoni",4.1017227235438884e-5
+"1","scabies",4.1017227235438884e-5
+"1","sarcoma, myeloid",4.1017227235438884e-5
+"1","rubulavirus infections",4.1017227235438884e-5
+"1","rubinstein-taybi syndrome",4.1017227235438884e-5
+"1","rotavirus infections",4.1017227235438884e-5
+"1","rhabdomyosarcoma",4.1017227235438884e-5
+"1","retinal detachment",4.1017227235438884e-5
+"1","renal aminoacidurias",4.1017227235438884e-5
+"1","purpura, thrombotic thrombocytopenic",4.1017227235438884e-5
+"1","purpura, schoenlein-henoch",4.1017227235438884e-5
+"1","pupil disorders",4.1017227235438884e-5
+"1","puerperal disorders",4.1017227235438884e-5
+"1","psychomotor disorders",4.1017227235438884e-5
+"1","protein deficiency",4.1017227235438884e-5
+"1","pregnancy complications, hematologic",4.1017227235438884e-5
+"1","poxviridae infections",4.1017227235438884e-5
+"1","positive-pressure respiration, intrinsic",4.1017227235438884e-5
+"1","polycythemia vera",4.1017227235438884e-5
+"1","polycystic kidney, autosomal dominant",4.1017227235438884e-5
+"1","poliomyelitis, bulbar",4.1017227235438884e-5
+"1","pneumonia, ventilator-associated",4.1017227235438884e-5
+"1","placental insufficiency",4.1017227235438884e-5
+"1","persian gulf syndrome",4.1017227235438884e-5
+"1","peritonsillar abscess",4.1017227235438884e-5
+"1","peritoneal diseases",4.1017227235438884e-5
+"1","peripheral nervous system diseases",4.1017227235438884e-5
+"1","periodontitis",4.1017227235438884e-5
+"1","periodontal abscess",4.1017227235438884e-5
+"1","periapical abscess",4.1017227235438884e-5
+"1","pemphigus",4.1017227235438884e-5
+"1","parotid diseases",4.1017227235438884e-5
+"1","parkinsonian disorders",4.1017227235438884e-5
+"1","paresthesia",4.1017227235438884e-5
+"1","paranoid disorders",4.1017227235438884e-5
+"1","pancreatitis",4.1017227235438884e-5
+"1","pancreatic diseases",4.1017227235438884e-5
+"1","ovarian neoplasms",4.1017227235438884e-5
+"1","osteomyelitis",4.1017227235438884e-5
+"1","osteochondritis",4.1017227235438884e-5
+"1","osteoarthritis",4.1017227235438884e-5
+"1","orbital diseases",4.1017227235438884e-5
+"1","oral ulcer",4.1017227235438884e-5
+"1","oculomotor nerve diseases",4.1017227235438884e-5
+"1","non-alcoholic fatty liver disease",4.1017227235438884e-5
+"1","nocturnal enuresis",4.1017227235438884e-5
+"1","nocardia infections",4.1017227235438884e-5
+"1","neuromuscular blockade",4.1017227235438884e-5
+"1","neurofibromatosis 1",4.1017227235438884e-5
+"1","nerve compression syndromes",4.1017227235438884e-5
+"1","neoplasm recurrence, local",4.1017227235438884e-5
+"1","nasopharyngeal neoplasms",4.1017227235438884e-5
+"1","narcissism",4.1017227235438884e-5
+"1","myelitis, transverse",4.1017227235438884e-5
+"1","mycosis fungoides",4.1017227235438884e-5
+"1","munchausen syndrome",4.1017227235438884e-5
+"1","moyamoya disease",4.1017227235438884e-5
+"1","mitochondrial diseases",4.1017227235438884e-5
+"1","meningitis, pneumococcal",4.1017227235438884e-5
+"1","meningitis, haemophilus",4.1017227235438884e-5
+"1","meniere disease",4.1017227235438884e-5
+"1","melanoma",4.1017227235438884e-5
+"1","mediastinal cyst",4.1017227235438884e-5
+"1","mastocytosis, cutaneous",4.1017227235438884e-5
+"1","mastocytosis",4.1017227235438884e-5
+"1","mastitis",4.1017227235438884e-5
+"1","masochism",4.1017227235438884e-5
+"1","marfan syndrome",4.1017227235438884e-5
+"1","mandibular diseases",4.1017227235438884e-5
+"1","malignant hyperthermia",4.1017227235438884e-5
+"1","male urogenital diseases",4.1017227235438884e-5
+"1","lymphomatoid granulomatosis",4.1017227235438884e-5
+"1","lymphoma, t-cell",4.1017227235438884e-5
+"1","lymphangitis",4.1017227235438884e-5
+"1","lupus erythematosus, discoid",4.1017227235438884e-5
+"1","lordosis",4.1017227235438884e-5
+"1","listeriosis",4.1017227235438884e-5
+"1","lip diseases",4.1017227235438884e-5
+"1","lichen sclerosus et atrophicus",4.1017227235438884e-5
+"1","lichen planus",4.1017227235438884e-5
+"1","leukoplakia",4.1017227235438884e-5
+"1","leukomalacia, periventricular",4.1017227235438884e-5
+"1","leukemia, t-cell",4.1017227235438884e-5
+"1","leukemia, lymphoid",4.1017227235438884e-5
+"1","leprosy",4.1017227235438884e-5
+"1","leishmaniasis, visceral",4.1017227235438884e-5
+"1","leishmaniasis",4.1017227235438884e-5
+"1","leiomyoma",4.1017227235438884e-5
+"1","legionellosis",4.1017227235438884e-5
+"1","leeches",4.1017227235438884e-5
+"1","larva migrans",4.1017227235438884e-5
+"1","kidney neoplasms",4.1017227235438884e-5
+"1","keratoderma, palmoplantar",4.1017227235438884e-5
+"1","keratitis",4.1017227235438884e-5
+"1","ischemic attack, transient",4.1017227235438884e-5
+"1","irritable bowel syndrome",4.1017227235438884e-5
+"1","intussusception",4.1017227235438884e-5
+"1","intracranial arteriosclerosis",4.1017227235438884e-5
+"1","intracranial aneurysm",4.1017227235438884e-5
+"1","intestinal obstruction",4.1017227235438884e-5
+"1","intestinal atresia",4.1017227235438884e-5
+"1","ichthyosis",4.1017227235438884e-5
+"1","iatrogenic disease",4.1017227235438884e-5
+"1","hypertension, renovascular",4.1017227235438884e-5
+"1","hypertension, renal",4.1017227235438884e-5
+"1","hypertension, pregnancy-induced",4.1017227235438884e-5
+"1","hyperphosphatemia",4.1017227235438884e-5
+"1","hyperopia",4.1017227235438884e-5
+"1","hyperlipoproteinemias",4.1017227235438884e-5
+"1","hyperemia",4.1017227235438884e-5
+"1","hyperbilirubinemia",4.1017227235438884e-5
+"1","hyperamylasemia",4.1017227235438884e-5
+"1","hyperaldosteronism",4.1017227235438884e-5
+"1","hyper-igm immunodeficiency syndrome, type 1",4.1017227235438884e-5
+"1","hymenolepis",4.1017227235438884e-5
+"1","histiocytosis, sinus",4.1017227235438884e-5
+"1","histiocytosis, langerhans-cell",4.1017227235438884e-5
+"1","herpes genitalis",4.1017227235438884e-5
+"1","hernias, diaphragmatic, congenital",4.1017227235438884e-5
+"1","hernia, umbilical",4.1017227235438884e-5
+"1","hepatitis, autoimmune",4.1017227235438884e-5
+"1","hepatitis b",4.1017227235438884e-5
+"1","hepatic insufficiency",4.1017227235438884e-5
+"1","hemangioma, capillary",4.1017227235438884e-5
+"1","heart septal defects",4.1017227235438884e-5
+"1","hearing loss, sensorineural",4.1017227235438884e-5
+"1","graves disease",4.1017227235438884e-5
+"1","granulomatous disease, chronic",4.1017227235438884e-5
+"1","gram-negative bacterial infections",4.1017227235438884e-5
+"1","gout",4.1017227235438884e-5
+"1","glomerulonephritis, iga",4.1017227235438884e-5
+"1","giant cell arteritis",4.1017227235438884e-5
+"1","genetic diseases, x-linked",4.1017227235438884e-5
+"1","genetic diseases, inborn",4.1017227235438884e-5
+"1","gangrene",4.1017227235438884e-5
+"1","friedreich ataxia",4.1017227235438884e-5
+"1","foot dermatoses",4.1017227235438884e-5
+"1","fetal distress",4.1017227235438884e-5
+"1","fetal alcohol spectrum disorders",4.1017227235438884e-5
+"1","fecal incontinence",4.1017227235438884e-5
+"1","eye infections",4.1017227235438884e-5
+"1","epiphyses, slipped",4.1017227235438884e-5
+"1","epilepsy, generalized",4.1017227235438884e-5
+"1","epilepsies, partial",4.1017227235438884e-5
+"1","epididymitis",4.1017227235438884e-5
+"1","endocardial fibroelastosis",4.1017227235438884e-5
+"1","encopresis",4.1017227235438884e-5
+"1","encephalomyelitis, acute disseminated",4.1017227235438884e-5
+"1","encephalomyelitis",4.1017227235438884e-5
+"1","encephalitis, tick-borne",4.1017227235438884e-5
+"1","encephalitis, japanese",4.1017227235438884e-5
+"1","embolism, amniotic fluid",4.1017227235438884e-5
+"1","eisenmenger complex",4.1017227235438884e-5
+"1","echinococcus",4.1017227235438884e-5
+"1","dystonic disorders",4.1017227235438884e-5
+"1","dyspnea, paroxysmal",4.1017227235438884e-5
+"1","dysentery, bacillary",4.1017227235438884e-5
+"1","duodenitis",4.1017227235438884e-5
+"1","drug-induced liver injury, chronic",4.1017227235438884e-5
+"1","domestic violence",4.1017227235438884e-5
+"1","dog diseases",4.1017227235438884e-5
+"1","digeorge syndrome",4.1017227235438884e-5
+"1","dermatitis, exfoliative",4.1017227235438884e-5
+"1","dermatitis herpetiformis",4.1017227235438884e-5
+"1","depression, postpartum",4.1017227235438884e-5
+"1","cumulative trauma disorders",4.1017227235438884e-5
+"1","cryptococcus neoformans",4.1017227235438884e-5
+"1","coronavirus infections",4.1017227235438884e-5
+"1","consciousness disorders",4.1017227235438884e-5
+"1","communication disorders",4.1017227235438884e-5
+"1","cocaine-related disorders",4.1017227235438884e-5
+"1","chorioretinitis",4.1017227235438884e-5
+"1","cholesteatoma",4.1017227235438884e-5
+"1","cholangitis",4.1017227235438884e-5
+"1","child reactive disorders",4.1017227235438884e-5
+"1","child abuse, sexual",4.1017227235438884e-5
+"1","chemical and drug induced liver injury",4.1017227235438884e-5
+"1","central nervous system neoplasms",4.1017227235438884e-5
+"1","cell transformation, neoplastic",4.1017227235438884e-5
+"1","carotid artery diseases",4.1017227235438884e-5
+"1","cardiovascular abnormalities",4.1017227235438884e-5
+"1","cardiomyopathy, hypertrophic",4.1017227235438884e-5
+"1","cardiac tamponade",4.1017227235438884e-5
+"1","carcinoma, squamous cell",4.1017227235438884e-5
+"1","carcinoma, lewis lung",4.1017227235438884e-5
+"1","candidiasis, cutaneous",4.1017227235438884e-5
+"1","byssinosis",4.1017227235438884e-5
+"1","bundle-branch block",4.1017227235438884e-5
+"1","bruxism",4.1017227235438884e-5
+"1","brachial plexus neuropathies",4.1017227235438884e-5
+"1","bone marrow diseases",4.1017227235438884e-5
+"1","blood platelet disorders",4.1017227235438884e-5
+"1","blood group incompatibility",4.1017227235438884e-5
+"1","blood coagulation disorders",4.1017227235438884e-5
+"1","blepharoptosis",4.1017227235438884e-5
+"1","bell palsy",4.1017227235438884e-5
+"1","bacteroides infections",4.1017227235438884e-5
+"1","bacteremia",4.1017227235438884e-5
+"1","autoimmunity",4.1017227235438884e-5
+"1","autoimmune diseases of the nervous system",4.1017227235438884e-5
+"1","arthritis, infectious",4.1017227235438884e-5
+"1","arterial occlusive diseases",4.1017227235438884e-5
+"1","anthrax",4.1017227235438884e-5
+"1","aneurysm, infected",4.1017227235438884e-5
+"1","aneurysm",4.1017227235438884e-5
+"1","anemia, hemolytic",4.1017227235438884e-5
+"1","amblyopia",4.1017227235438884e-5
+"1","altitude sickness",4.1017227235438884e-5
+"1","alpha-thalassemia",4.1017227235438884e-5
+"1","alopecia areata",4.1017227235438884e-5
+"1","alopecia",4.1017227235438884e-5
+"1","alcoholic intoxication",4.1017227235438884e-5
+"1","agranulocytosis",4.1017227235438884e-5
+"1","adiposis dolorosa",4.1017227235438884e-5
+"1","acromegaly",4.1017227235438884e-5
+"1","acanthosis nigricans",4.1017227235438884e-5
+"1","abortion, habitual",4.1017227235438884e-5
+"1","abdominal neoplasms",4.1017227235438884e-5
