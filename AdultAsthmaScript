@@ -9,6 +9,7 @@ using PlotlyJS
 using RCall
 using AssociationRules
 using Rsvg
+using BioMedQuery.Entrez.DB
 
 function split_rule!(dat)
     n = size(dat, 1)
@@ -151,23 +152,71 @@ apriori2(itemsets_filtered, .01, .01, 2, 3, 0) #association rules for filtered d
 #umls filtering function
 #itemsets
 #jupyter notebook
-#histograms
+#histograms -- savefig(p, "./plot_test.pdf")
 #other plots
 #comparison table
 #readme - paper - results - comparison - link to notebook
 
 
-savefig(p, "./plot_test.pdf")
 
 
-itemsets_filtered
 
 
-mesh_descrips_filtered
+mesh_descrips_filtered = readtable("/Users/JasonKatz/Desktop/Code/PubMedAsthma/Data/Adult/MeshDescripsFiltered.csv")
 
+filtered_mesh = Set(mesh_descrips_filtered[:mesh_descriptor])
 
-filt = Set(mesh_descrips_filtered[:mesh_descriptor])
+des_ind_dict = Dict()
 
-arts
+for (i, fm) in enumerate(filtered_mesh)
+    des_ind_dict[fm]= i
+end
 
-article_mesh = Set(Entrez.DB.get_article_mesh(con, arts))
+articles = all_pmids(con)
+
+disease_occurances = spzeros(length(filtered_mesh), length(articles))
+
+narticle = 0
+
+for (i, pmid) in enumerate(articles)
+
+    #get all mesh descriptors associated with give article
+    article_mesh = Set(Entrez.DB.get_article_mesh(con, pmid))
+
+    #not all mesh are of the desired semantic type
+    article_filtered_mesh = intersect(article_mesh, filtered_mesh)
+
+    #skip if empty
+    if isempty(article_filtered_mesh)
+        continue
+    end
+
+    #otherwise form feature vector for this article
+    indices = []
+    for d in article_filtered_mesh
+        push!(indices, des_ind_dict[d])
+    end
+
+    #TO DO: Not sure about the type. Should we choose bool to save space
+    # or float to support opperations
+    article_dis_feature  = zeros(Int, (length(filtered_mesh),1))
+    article_dis_feature[indices] = 1
+
+    #append to data matrix
+    disease_occurances[:, i] = article_dis_feature
+    narticle+=1
+end
+
+des_ind_dict
+
+disease_occurances'
+
+itemsets_filtered = readtable("/Users/JasonKatz/Desktop/Code/PubMedAsthma/Data/Adult/ItemsetsFiltered.csv")
+
+itemsets = DataFrame(Matrix(convert(Array{Int64}, disease_occurances')))
+
+names!(itemsets, [symbol(mesh_descrips_filtered[i,2]) for i in 1:length(mesh_descrips_filtered[2])])
+
+apriori2(itemsets, .01, .01, 2, 3, 0)
+
+apriori2(itemsets_filtered, .01, .01, 2, 3, 0)
