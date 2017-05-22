@@ -26,18 +26,15 @@ function apriori2(dat::DataFrame, supp = 0.2, conf = 0.01, minlen = 1, maxlen = 
     @rput minlen
     @rput maxlen
     @rput minlift
+    @rput dat
     R"library('arules')"
-    path = homedir()
-    writetable("$path/output.csv",dat)
-    @rput path
-    R"dat2 = read.csv(paste(path, '/output.csv', sep = ''))"
-    R"dat2 <- as(as(dat2, 'matrix'),'itemMatrix')"
+    R"dat2 <- as(as(dat, 'matrix'),'itemMatrix')"
     R"rules1 <- apriori(dat2, parameter = list(supp = supp, conf = conf, minlen = minlen, maxlen = maxlen), control = list(verbose = FALSE))"
     R"rules1 <- if (length(rules1) == 0) data.frame() else rules1"
     R"rules1 <- character_columns(as(rules1, \"data.frame\"))"
     R"rules_sub <- subset(rules1, subset = lift > minlift)"
     rules_df = @rget rules_sub;             # get dataframe from R
-    R"rm(dat2, rules1, rules_sub, supp, conf, minlen, maxlen, minlift)"           # clean up R environment
+    R"rm(dat, dat2, rules1, rules_sub, supp, conf, minlen, maxlen, minlift)"           # clean up R environment
     split_rule!(rules_df);
     rules_df = rules_df[:, [:lhs, :rhs, :support, :confidence, :lift]]
     rules_df
@@ -147,7 +144,7 @@ p = plot(bar(x=mesh_descrips_filtered[1:25,:mesh_descriptor], y=mesh_descrips_fi
 apriori2(itemsets_filtered, .01, .01, 2, 3, 0) #association rules for filtered data
 ############################################################Results############################################################
 
-
+#apriori github
 
 #umls filtering function
 #itemsets
@@ -196,7 +193,7 @@ function umls_semantic_occurrences_2(db, umls_semantic_type_1, umls_semantic_typ
     filtered_mesh = Set(mesh_descrips_filtered[:mesh_descriptor])
 
     #create a map of filtered descriptor name to index to guarantee order
-    des_ind_dict = Dict()
+    des_ind_dict = Dict{String, Int}()
 
     for (i, fm) in enumerate(filtered_mesh)
         des_ind_dict[fm]= i
@@ -241,7 +238,7 @@ function umls_semantic_occurrences_2(db, umls_semantic_type_1, umls_semantic_typ
 
     name_dict = sort(collect(des_ind_dict), by=x->x[2])
 
-    col_names = DataArray(AbstractString, length(des_ind_dict))
+    col_names = DataArray(String, length(des_ind_dict))
 
     for i in 1:length(des_ind_dict)
         name = name_dict[i][1]
