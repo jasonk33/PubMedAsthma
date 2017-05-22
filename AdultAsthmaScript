@@ -156,12 +156,35 @@ apriori2(itemsets_filtered, .01, .01, 2, 3, 0) #association rules for filtered d
 
 
 
+function filter_mesh_by_concept_3(db, umls_concepts::Array{String})
+
+    queries = DataArray(String, length(umls_concepts)-1)
+    for i in 2:length(umls_concepts)
+        query = string(" OR umls LIKE '", umls_concepts[i], "'")
+        queries[i-1] = query
+    end
+    query_1 = string("SELECT mesh FROM mesh2umls WHERE umls LIKE '", umls_concepts[1], "'")
+    query_2 = join(queries)
+    query_joined = string(query_1, query_2)
+    query  = mysql_execute(db, query_joined)
+    #return data array
+    return get_value(query.columns[1])
+
+end
+
+
+filter_mesh_by_concept_3(db, ["Disease or Syndrome", "Mental or Behavioral Dysfunction", "Neoplastic Process"])
+
+
+
+
 mysql_disconnect(db)
 
-filter_mesh_by_concept_2(db, "Disease or Syndrome", "Mental or Behavioral Dysfunction", "Neoplastic Process")
+
+filter_mesh_by_concepts(db, "Disease or Syndrome", "Mental or Behavioral Dysfunction", "Neoplastic Process")
 
 
-function filter_mesh_by_concept_2(db, umls_semantic_type_1, umls_semantic_type_2 = "none", umls_semantic_type_3 = "none", umls_semantic_type_4 = "none", umls_semantic_type_5 = "none")
+function filter_mesh_by_concepts(db, umls_semantic_type_1, umls_semantic_type_2 = "none", umls_semantic_type_3 = "none", umls_semantic_type_4 = "none", umls_semantic_type_5 = "none", umls_semantic_type_6 = "none", umls_semantic_type_7 = "none", umls_semantic_type_8 = "none", umls_semantic_type_9= "none", umls_semantic_type_10 = "none")
 
     mesh_descriptor=[]
     mesh_heading=[]
