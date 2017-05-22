@@ -124,7 +124,7 @@ names!(itemsets_filtered, [symbol(mesh_descrips_filtered[i,2]) for i in 1:length
     for j = 1:length(arts_filtered)
         contains_filtered=Vector(length(mesh_descrips_filtered[2]))
         for i = 1:length(mesh_descrips_filtered[2])
-            contain_filtered = Int(in(mesh_descrips_filtered[i,2],convert(Array{AbstractString}, unique(data_filtered[data_filtered[:pmid].==arts_filtered[j],1])))) #get 1 or 0 for each item in a transaction
+            contain_filtered = Int(in(mesh_descrips_filtered[i,2],convert(Array{String}, unique(data_filtered[data_filtered[:pmid].==arts_filtered[j],1])))) #get 1 or 0 for each item in a transaction
             contains_filtered[i] = contain_filtered #add each item's value (1 or 0) to the transaction vector
         end
         push!(itemsets_filtered, contains_filtered) #add all transaction vectors to dataframe
@@ -153,6 +153,74 @@ apriori2(itemsets_filtered, .01, .01, 2, 3, 0) #association rules for filtered d
 #other plots
 #comparison table
 #readme - paper - results - comparison - link to notebook
+
+
+
+mysql_disconnect(db)
+
+filter_mesh_by_concept_2(db, "Disease or Syndrome", "Mental or Behavioral Dysfunction", "Neoplastic Process")
+
+
+function filter_mesh_by_concept_2(db, umls_semantic_type_1, umls_semantic_type_2 = "none", umls_semantic_type_3 = "none", umls_semantic_type_4 = "none", umls_semantic_type_5 = "none")
+
+    mesh_descriptor=[]
+    mesh_heading=[]
+    mesh2umls=[]
+    try
+        mesh_descriptor = mysql_execute(db, "SELECT * FROM mesh_descriptor;") #get mesh descriptor data from MySQL
+    catch
+        error("mesh_descriptor table does not exitst in database, use pubmed_search_and_save() function to create your database")
+    end
+    try
+        mesh_heading = mysql_execute(db, "SELECT * FROM mesh_heading;") #get header data from MySQL
+    catch
+        error("mesh_heading table does not exist in database, use pubmed_search_and_save() function to create your database")
+    end
+    try
+        mesh2umls = mysql_execute(db, "SELECT * FROM mesh2umls;") #get data umls data from MySQL
+    catch
+        error("You must first add umls terms to database use map_mesh_to_umls_async!() function")
+    end
+    rename!(mesh_descriptor, [:id, :name], [:did, :mesh_descriptor]) #change columns name for join
+    data = sort(join(mesh_descriptor, mesh_heading, on = :did)[:,[:mesh_descriptor, :pmid]], cols=:pmid) #data of mesh terms for each article
+    rename!(mesh2umls, :mesh, :mesh_descriptor) #change column name for join
+    if umls_semantic_type_2 == "none"
+        umls_filtered = mesh2umls[mesh2umls[:umls] .== "$umls_semantic_type_1",:] #filter by semantic type
+    elseif umls_semantic_type_3 == "none"
+        umls_filtered = mesh2umls[(mesh2umls[:umls] .== "$umls_semantic_type_1") | (mesh2umls[:umls] .== "$umls_semantic_type_2"),:] #filter by semantic type
+    elseif umls_semantic_type_4 == "none"
+        umls_filtered = mesh2umls[(mesh2umls[:umls] .== "$umls_semantic_type_1") | (mesh2umls[:umls] .== "$umls_semantic_type_2") | (mesh2umls[:umls] .== "$umls_semantic_type_3"),:] #filter by semantic type
+    elseif umls_semantic_type_5 == "none"
+        umls_filtered = mesh2umls[(mesh2umls[:umls] .== "$umls_semantic_type_1") | (mesh2umls[:umls] .== "$umls_semantic_type_2") | (mesh2umls[:umls] .== "$umls_semantic_type_3") | (mesh2umls[:umls] .== "$umls_semantic_type_4"),:] #filter by semantic type
+    else
+        umls_filtered = mesh2umls[(mesh2umls[:umls] .== "$umls_semantic_type_1") | (mesh2umls[:umls] .== "$umls_semantic_type_2") | (mesh2umls[:umls] .== "$umls_semantic_type_3") | (mesh2umls[:umls] .== "$umls_semantic_type_4") | (mesh2umls[:umls] .== "$umls_semantic_type_5"),:] #filter by semantic type
+    end
+    data_filtered = join(data, umls_filtered, on = :mesh_descriptor) #new data after filtering
+    arts_filtered = unique(data_filtered[:pmid]) #article ID's after filtering
+    mesh_counts_filtered = sort(collect(zip(values(countmap(data_filtered[:mesh_descriptor])),keys(countmap(data_filtered[:mesh_descriptor])))),rev=true) #counts for mesh descriptors after filtering
+    mesh_descrips_filtered=DataFrame(Any,0,2)
+    for i in 1:length(mesh_counts_filtered)
+        mesh_descrip_filtered = [mesh_counts_filtered[i][1],mesh_counts_filtered[i][2]]
+        push!(mesh_descrips_filtered, mesh_descrip_filtered)
+    end #get mesh counts into usable form
+    frequency = DataArray(Float64, length(mesh_descrips_filtered[2]))
+    for i in 1:length(mesh_descrips_filtered[2])
+        freq = length(unique(data_filtered[data_filtered[:mesh_descriptor] .== mesh_descrips_filtered[i,2],2]))/length(arts_filtered)
+        frequency[i] = freq
+    end #calculate frequency for each mesh term
+    mesh_descrips_filtered[:freq]=frequency #add frequencies to data
+    sort!(mesh_descrips_filtered, cols = :freq, rev = true) #sort by frequency
+    rename!(mesh_descrips_filtered, [:x1, :x2], [:count, :mesh_descriptor]) #rename columns
+    return mesh_descrips_filtered
+
+end
+
+
+
+
+
+
+
 
 function umls_semantic_occurrences_2(db, umls_semantic_type_1, umls_semantic_type_2 = "none", umls_semantic_type_3 = "none", umls_semantic_type_4 = "none", umls_semantic_type_5 = "none")
 
