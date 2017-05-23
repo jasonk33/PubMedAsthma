@@ -307,3 +307,18 @@ function filter_mesh_by_concepts(db, umls_semantic_type_1, umls_semantic_type_2 
     return mesh_descrips_filtered
 
 end
+
+
+
+itemsets_filtered = DataFrame(Any, 0,length(mesh_descrips_filtered[2])) #initialize empty dataframe
+names!(itemsets_filtered, [symbol(mesh_descrips_filtered[i,2]) for i in 1:length(mesh_descrips_filtered[2])]) #add column names
+@time begin
+    for j = 1:length(arts_filtered)
+        contains_filtered=Vector(length(mesh_descrips_filtered[2]))
+        for i = 1:length(mesh_descrips_filtered[2])
+            contain_filtered = Int(in(mesh_descrips_filtered[i,2],convert(Array{String}, unique(data_filtered[data_filtered[:pmid].==arts_filtered[j],1])))) #get 1 or 0 for each item in a transaction
+            contains_filtered[i] = contain_filtered #add each item's value (1 or 0) to the transaction vector
+        end
+        push!(itemsets_filtered, contains_filtered) #add all transaction vectors to dataframe
+    end
+end

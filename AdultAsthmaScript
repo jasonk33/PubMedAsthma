@@ -37,6 +37,12 @@ function apriori2(dat::DataFrame, supp = 0.2, conf = 0.01, minlen = 1, maxlen = 
     R"rm(dat, dat2, rules1, rules_sub, supp, conf, minlen, maxlen, minlift)"           # clean up R environment
     split_rule!(rules_df);
     rules_df = rules_df[:, [:lhs, :rhs, :support, :confidence, :lift]]
+    for i in 1:length(rules_df[1])
+        lhs = rules_df[i,1][2:end-1]
+        rhs = rules_df[i,2][2:end-1]
+        rules_df[i,1] = lhs
+        rules_df[i,2] = rhs
+    end
     rules_df
 end
 
@@ -118,18 +124,7 @@ end #calculate frequency for each mesh term
 mesh_descrips_filtered[:freq]=frequency #add frequencies to data
 sort!(mesh_descrips_filtered, cols = :freq, rev = true) #sort by frequency
 rename!(mesh_descrips_filtered, [:x1, :x2], [:count, :mesh_descriptor]) #rename columns
-itemsets_filtered = DataFrame(Any, 0,length(mesh_descrips_filtered[2])) #initialize empty dataframe
-names!(itemsets_filtered, [symbol(mesh_descrips_filtered[i,2]) for i in 1:length(mesh_descrips_filtered[2])]) #add column names
-@time begin
-    for j = 1:length(arts_filtered)
-        contains_filtered=Vector(length(mesh_descrips_filtered[2]))
-        for i = 1:length(mesh_descrips_filtered[2])
-            contain_filtered = Int(in(mesh_descrips_filtered[i,2],convert(Array{String}, unique(data_filtered[data_filtered[:pmid].==arts_filtered[j],1])))) #get 1 or 0 for each item in a transaction
-            contains_filtered[i] = contain_filtered #add each item's value (1 or 0) to the transaction vector
-        end
-        push!(itemsets_filtered, contains_filtered) #add all transaction vectors to dataframe
-    end
-end
+
 ############################################################Results############################################################
 length(arts) #Number of articles matching search criteria
 length(mesh_descrips[:,2]) #Number of unique mesh descriptors
@@ -141,7 +136,7 @@ plot(bar(x=semantics[1:10,:semantic_type], y=semantics[1:10,:freq])) #Top 10 sem
 length(mesh_descrips_filtered[:,:mesh_descriptor]) #Number of unique mesh descriptors after filtering
 mesh_descrips_filtered #Counts and frequencies of mesh descriptors after filtering
 p = plot(bar(x=mesh_descrips_filtered[1:25,:mesh_descriptor], y=mesh_descrips_filtered[1:25,:freq])) #Top 25 mesh descriptors after filtering
-apriori2(itemsets_filtered, .01, .01, 2, 3, 0) #association rules for filtered data
+#apriori2(itemsets_filtered, .01, .01, 2, 3, 0) #association rules for filtered data
 ############################################################Results############################################################
 
 #apriori github
@@ -158,28 +153,30 @@ apriori2(itemsets_filtered, .01, .01, 2, 3, 0) #association rules for filtered d
 
 
 # Retrieve all mesh descriptors associated with the given umls_concepts
-function filter_mesh_by_concepts(db, umls_concepts::Array{String})
-
-    queries = DataArray(String, length(umls_concepts)-1)
-    for i in 2:length(umls_concepts)
-        query = string(" OR umls LIKE '", umls_concepts[i], "'")
-        queries[i-1] = query
+function filter_mesh_by_concepts(db, umls_concepts...)
+    if length(umls_concepts) == 1
+        uc = string("'", replace(umls_concepts, "'", "''") , "'")
+        query  = mysql_execute(db, "SELECT mesh FROM mesh2umls
+        WHERE umls LIKE $uc ")
+    else
+        query_1 = string(" '", umls_concepts[1], "'")
+        queries = DataArray(String, length(umls_concepts)-1)
+        for i in 2:length(umls_concepts)
+            query = string(", '", umls_concepts[i], "'")
+            queries[i-1] = query
+        end
+        query_2 = join(queries)
+        query_joined = string("SELECT mesh FROM mesh2umls WHERE umls IN (", query_1, query_2, " )")
+        query  = mysql_execute(db, query_joined)
     end
-    query_1 = string("SELECT mesh FROM mesh2umls WHERE umls LIKE '", umls_concepts[1], "'")
-    query_2 = join(queries)
-    query_joined = string(query_1, query_2)
-    query  = mysql_execute(db, query_joined)
-
     #return data array
     return get_value(query.columns[1])
-
 end
 
 
-function umls_semantic_occurrences_2(db, umls_concepts::Array{String})
+function umls_semantic_occurrences_2(db, umls_concepts...)
 
-
-    filtered_mesh = Set(filter_mesh_by_concepts(db, umls_concepts))
+    filtered_mesh = Set(filter_mesh_by_concepts(db, umls_concepts...))
 
     #create a map of filtered descriptor name to index to guarantee order
     des_ind_dict = Dict{String, Int}()
@@ -245,30 +242,33 @@ function occurances_to_itemsets(des_ind_dict, disease_occurances)
     return itemsets
 end
 
-des_ind_dict, disease_occurances = umls_semantic_occurrences_2(db, ["Disease or Syndrome", "Mental or Behavioral Dysfunction", "Neoplastic Process"])
+
+
+des_ind_dict, disease_occurances = umls_semantic_occurrences_2(db, "Disease or Syndrome", "Mental or Behavioral Dysfunction", "Neoplastic Process")
 
 itemsets = occurances_to_itemsets(des_ind_dict, disease_occurances)
 
 association_rules = apriori2(itemsets, .01, .01, 2, 3, 0)
 
-a_rul = deepcopy(association_rules)
-
-readtable("/Users/jason_katz")
-
-for i in 1:length(a_rul[1])
-    lhs = a_rul[i,1][2:end-1]
-    rhs = a_rul[i,2][2:end-1]
-    a_rul[i,1] = lhs
-    a_rul[i,2] = rhs
-end
-a_rul
 
 
 
-lhs_counts = sort(collect(zip(values(countmap(lefts)),keys(countmap(lefts)))),rev=true)
+
+
+
+
+lhs_counts = sort(collect(zip(values(countmap(association_rules[1])),keys(countmap(association_rules[1])))),rev=true)
 lhs=DataFrame(term=[], count=[])
 for i in 1:length(lhs_counts)
-    item = [lhs_counts[i][2],lhs_counts[i][1]]
-    push!(lhs, item)
+    left = [lhs_counts[i][2],lhs_counts[i][1]]
+    push!(lhs, left)
 end
 lhs
+
+rhs_counts = sort(collect(zip(values(countmap(association_rules[2])),keys(countmap(association_rules[2])))),rev=true)
+rhs=DataFrame(term=[], count=[])
+for i in 1:length(rhs_counts)
+    right = [rhs_counts[i][2],rhs_counts[i][1]]
+    push!(rhs, right)
+end
+rhs
