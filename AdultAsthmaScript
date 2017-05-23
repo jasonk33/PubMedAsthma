@@ -233,7 +233,7 @@ function umls_semantic_occurrences_2(db, umls_concepts::Array{String})
 end
 
 
-function occurences_to_itemsets(des_ind_dict, disease_occurances)
+function occurances_to_itemsets(des_ind_dict, disease_occurances)
     name_dict = sort(collect(des_ind_dict), by=x->x[2])
     col_names = DataArray(String, length(des_ind_dict))
     for i in 1:length(des_ind_dict)
@@ -247,14 +247,28 @@ end
 
 des_ind_dict, disease_occurances = umls_semantic_occurrences_2(db, ["Disease or Syndrome", "Mental or Behavioral Dysfunction", "Neoplastic Process"])
 
-itemsets = occurences_to_itemsets(des_ind_dict, disease_occurances)
+itemsets = occurances_to_itemsets(des_ind_dict, disease_occurances)
 
 association_rules = apriori2(itemsets, .01, .01, 2, 3, 0)
 
+a_rul = deepcopy(association_rules)
+
+readtable("/Users/jason_katz")
+
+for i in 1:length(a_rul[1])
+    lhs = a_rul[i,1][2:end-1]
+    rhs = a_rul[i,2][2:end-1]
+    a_rul[i,1] = lhs
+    a_rul[i,2] = rhs
+end
+a_rul
 
 
 
-
-
-
-apriori2(itemsets_filtered, .01, .01, 2, 3, 0)
+lhs_counts = sort(collect(zip(values(countmap(lefts)),keys(countmap(lefts)))),rev=true)
+lhs=DataFrame(term=[], count=[])
+for i in 1:length(lhs_counts)
+    item = [lhs_counts[i][2],lhs_counts[i][1]]
+    push!(lhs, item)
+end
+lhs
