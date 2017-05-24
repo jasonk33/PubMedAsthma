@@ -142,7 +142,6 @@ p = plot(bar(x=mesh_descrips_filtered[1:25,:mesh_descriptor], y=mesh_descrips_fi
 #apriori github
 
 #umls filtering function
-#itemsets
 #jupyter notebook
 #histograms -- savefig(p, "./plot_test.pdf")
 #other plots
@@ -324,4 +323,6 @@ end
 
 xx,yy=change_bubbles(x_vals, y_vals)
 
-plot(scatter(x=xx, y=yy, mode="markers", marker_size=500.*association_rules[:support]))
+p=plot(scatter(x=xx, y=yy, mode="markers", marker_size=1000.*association_rules[:support]),Layout(height=1000, width=1000,margin=[1,1,1,1],title="Grouped Matrix for 43 Rules - Adult Asthma",yaxis_title="RHS",xaxis_title="LHS"))
+
+savefig(p, "Users/JasonKatz/Desktop/Code/PubMedAsthma/plot_test.pdf")
