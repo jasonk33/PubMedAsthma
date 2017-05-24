@@ -251,38 +251,77 @@ itemsets = occurances_to_itemsets(des_ind_dict, disease_occurances)
 association_rules = apriori2(itemsets, .01, .01, 2, 3, 0)
 
 
+function lhs_rhs_vals(association_rules)
+    lhs_counts = collect(zip(values(countmap(association_rules[1])),keys(countmap(association_rules[1]))))
+    lhs_before=DataFrame(term=[])
+    for i in 1:length(lhs_counts)
+        left = [lhs_counts[i][2]]
+        push!(lhs_before, left)
+    end
 
-lhs_counts = collect(zip(values(countmap(association_rules[1])),keys(countmap(association_rules[1]))))
-lhs=DataFrame(term=[], count=[])
-for i in 1:length(lhs_counts)
-    left = [lhs_counts[i][2],lhs_counts[i][1]]
-    push!(lhs, left)
+    rhs_counts = collect(zip(values(countmap(association_rules[2])),keys(countmap(association_rules[2]))))
+    rhs_before=DataFrame(term=[])
+    for i in 1:length(rhs_counts)
+        right = [rhs_counts[i][2]]
+        push!(rhs_before, right)
+    end
+
+    lhs = DataArray(String,length(lhs_counts))
+    for i in 1:length(lhs_counts)
+        name = string(lhs_counts[i][2], " : ", lhs_counts[i][1])
+        lhs[i]=name
+    end
+
+    rhs = DataArray(String,length(rhs_counts))
+    for i in 1:length(rhs_counts)
+        name = string(rhs_counts[i][2], " : ", rhs_counts[i][1])
+        rhs[i] = name
+    end
+
+    x_vals = DataArray(String, length(association_rules[1]))
+    for i in 1:length(association_rules[1])
+        x_val = lhs[association_rules[i,1].==lhs_before[1],1][1]
+        x_vals[i] = x_val
+    end
+
+    y_vals = DataArray(String, length(association_rules[1]))
+    for i in 1:length(association_rules[1])
+        y_val = rhs[association_rules[i,2].==rhs_before[1],1][1]
+        y_vals[i] = y_val
+    end
+
+    return x_vals, y_vals
 end
-lhs[:x] = collect(1:length(lhs[1]))
-lhs
 
-rhs_counts = collect(zip(values(countmap(association_rules[2])),keys(countmap(association_rules[2]))))
-rhs=DataFrame(term=[], count=[])
-for i in 1:length(rhs_counts)
-    right = [rhs_counts[i][2],rhs_counts[i][1]]
-    push!(rhs, right)
+x_vals,y_vals=lhs_rhs_vals(association_rules)
+
+plot(scatter(x=x_vals, y=y_vals, mode="markers", marker_size=500.*association_rules[:support]))
+
+function change_bubbles(x_vals, y_vals)
+    dat2 = DataFrame(x=x_vals, y=y_vals)
+    counts = []
+    for i in 1:length(dat2[1])
+        yes = isequal(mode(x_vals), dat2[i,1]) | isequal(mode(y_vals), dat2[i,2])
+        if yes == false
+            count = i
+            push!(counts, count)
+        end
+    end
+    cc = convert(DataArray{Int}, counts)
+    datt = dat2[cc,:]
+    counts = []
+    for i in 1:length(dat2[1])
+        yes = isequal(mode(x_vals), dat2[i,1]) | isequal(mode(y_vals), dat2[i,2])
+        if yes == true
+            count = i
+            push!(counts, count)
+        end
+    end
+    cc = convert(DataArray{Int}, counts)
+    dattt = append!(datt,dat2[cc,:])
+    return dattt[1],dattt[2]
 end
-rhs[:y] = collect(1:length(rhs[1]))
-rhs
 
-x_vals = DataArray(Int, length(association_rules[1]))
-for i in 1:length(association_rules[1])
-    x_val = lhs[association_rules[i,1].==lhs[1],3][1]
-    x_vals[i] = x_val
-end
-x_vals
+xx,yy=change_bubbles(x_vals, y_vals)
 
-y_vals = DataArray(Int, length(association_rules[1]))
-for i in 1:length(association_rules[1])
-    y_val = rhs[association_rules[i,2].==rhs[1],3][1]
-    y_vals[i] = y_val
-end
-y_vals
-
-
-p = plot(scatter(x=x_vals, y=y_vals, mode="markers", marker_size=500.*association_rules[:support]))
+plot(scatter(x=xx, y=yy, mode="markers", marker_size=500.*association_rules[:support]))
