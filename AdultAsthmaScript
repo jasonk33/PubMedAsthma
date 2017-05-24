@@ -44,6 +44,7 @@ function apriori2(dat::DataFrame, supp = 0.2, conf = 0.01, minlen = 1, maxlen = 
         rules_df[i,2] = rhs
     end
     rules_df[:chi_squared] = length(dat[1]).*rules_df[:,:support].*(rules_df[:,:lift]-1).^2.*rules_df[:,:support].*rules_df[:,:confidence]./(rules_df[:,:confidence]-rules_df[:,:support])./(rules_df[:,:lift]-rules_df[:,:confidence])
+    sort!(rules_df, cols = :chi_squared, rev=true)
     rules_df
 end
 
@@ -253,7 +254,8 @@ itemsets = occurances_to_itemsets(des_ind_dict, disease_occurances)
 association_rules = apriori2(itemsets, .01, .01, 2, 3, 0)
 
 
-plot(scatter(x=association_rules[1], y=association_rules[2], mode="markers", marker_size=500.*association_rules[:support], marker_color=association_rules[:chi_squared]))
+
+plot(scatter(x=association_rules[1], y=association_rules[2], mode="markers", marker_size=1000.*association_rules[:support], marker_color=association_rules[:chi_squared]),Layout(height=1000, width=1000,margin=[1,1,1,1],title="Grouped Matrix for 43 Rules - Adult Asthma",yaxis_title="RHS",xaxis_title="LHS"))
 
 function lhs_rhs_vals(association_rules)
     lhs_counts = collect(zip(values(countmap(association_rules[1])),keys(countmap(association_rules[1]))))
@@ -299,7 +301,7 @@ end
 
 x_vals,y_vals=lhs_rhs_vals(association_rules)
 
-plot(scatter(x=x_vals, y=y_vals, mode="markers", marker_size=500.*association_rules[:support]))
+plot(scatter(x=x_vals, y=y_vals, mode="markers", marker_size=1000.*association_rules[:support], marker_color=association_rules[:chi_squared]),Layout(height=1000, width=1000,margin=[1,1,1,1],title="Grouped Matrix for 43 Rules - Adult Asthma",yaxis_title="RHS",xaxis_title="LHS"))
 
 function change_bubbles(x_vals, y_vals)
     dat2 = DataFrame(x=x_vals, y=y_vals)
@@ -328,6 +330,6 @@ end
 
 xx,yy=change_bubbles(x_vals, y_vals)
 
-plot(scatter(x=xx, y=yy, mode="markers", marker_size=1000.*association_rules[:support]),Layout(height=1000, width=1000,margin=[1,1,1,1],title="Grouped Matrix for 43 Rules - Adult Asthma",yaxis_title="RHS",xaxis_title="LHS"))
+plot(scatter(x=xx, y=yy, mode="markers", marker_size=1000.*association_rules[:support], marker_color=association_rules[:chi_squared]),Layout(height=1000, width=1000,margin=[1,1,1,1],title="Grouped Matrix for 43 Rules - Adult Asthma",yaxis_title="RHS",xaxis_title="LHS"))
 
 savefig(p, "Users/JasonKatz/Desktop/Code/PubMedAsthma/plot_test.pdf")
