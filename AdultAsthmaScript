@@ -333,3 +333,18 @@ xx,yy=change_bubbles(x_vals, y_vals)
 plot(scatter(x=xx, y=yy, mode="markers", marker_size=1000.*association_rules[:support], marker_color=association_rules[:chi_squared]),Layout(height=1000, width=1000,margin=[1,1,1,1],title="Grouped Matrix for 43 Rules - Adult Asthma",yaxis_title="RHS",xaxis_title="LHS"))
 
 savefig(p, "Users/JasonKatz/Desktop/Code/PubMedAsthma/plot_test.pdf")
+
+
+
+
+
+
+semantic_ped = readtable("/Users/JasonKatz/Desktop/Code/PubMedAsthma/Data/Pediatric/Semantics.csv")
+semantic_adult = readtable("/Users/JasonKatz/Desktop/Code/PubMedAsthma/Data/Adult/Semantics.csv")
+
+
+(semantic_ped[semantic_ped[2].=="Age Group",:freq]/semantic_adult[semantic_adult[2].=="Age Group",:freq])[1]
+(semantic_adult[semantic_adult[2].=="Population Group",:freq]/semantic_ped[semantic_ped[2].=="Population Group",:freq])[1]
+(semantic_adult[semantic_adult[2].=="Human",:freq]/semantic_ped[semantic_ped[2].=="Human",:freq])[1]
+(semantic_ped[semantic_ped[2].=="Disease or Syndrome",:freq]/semantic_adult[semantic_adult[2].=="Disease or Syndrome",:freq])[1]
+(semantic_adult[semantic_adult[2].=="Organism Attribute",:freq]/semantic_ped[semantic_ped[2].=="Organism Attribute",:freq])[1]
