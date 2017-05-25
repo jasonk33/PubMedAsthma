@@ -393,3 +393,5 @@ function mesh_fold(mesh_ped, mesh_adult)
 
     return folds_mesh
 end
+
+mesh_fold(mesh_ped,mesh_adult)
