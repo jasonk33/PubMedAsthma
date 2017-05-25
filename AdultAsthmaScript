@@ -344,26 +344,40 @@ semantic_adult = readtable("/Users/JasonKatz/Desktop/Code/PubMedAsthma/Data/Adul
 mesh_ped = readtable("/Users/JasonKatz/Desktop/Code/PubMedAsthma/Data/Pediatric/MeshDescripsFiltered.csv")
 mesh_adult = readtable("/Users/JasonKatz/Desktop/Code/PubMedAsthma/Data/Adult/MeshDescripsFiltered.csv")
 
+function semantic_fold(semantic_ped, semantic_adult, term::String)
+    try
+        fold = (semantic_ped[semantic_ped[2].==term,:freq]/semantic_adult[semantic_adult[2].==term,:freq])[1]
+    catch
+        error("Term not in semantic data sets")
+    end
+    if fold < 1
+        fold = inv(fold)
+        println("Term associated more with adult asthma")
+    else
+        println("Term associated more with pediatric asthma")
+    end
+    return fold
+end
 
-(semantic_ped[semantic_ped[2].=="Age Group",:freq]/semantic_adult[semantic_adult[2].=="Age Group",:freq])[1]
-(semantic_adult[semantic_adult[2].=="Population Group",:freq]/semantic_ped[semantic_ped[2].=="Population Group",:freq])[1]
-(semantic_adult[semantic_adult[2].=="Human",:freq]/semantic_ped[semantic_ped[2].=="Human",:freq])[1]
-(semantic_ped[semantic_ped[2].=="Disease or Syndrome",:freq]/semantic_adult[semantic_adult[2].=="Disease or Syndrome",:freq])[1]
-(semantic_adult[semantic_adult[2].=="Organism Attribute",:freq]/semantic_ped[semantic_ped[2].=="Organism Attribute",:freq])[1]
+semantic_fold(semantic_ped, semantic_adult, "Age Group")
+semantic_fold(semantic_ped, semantic_adult, "Population Group")
+semantic_fold(semantic_ped, semantic_adult, "Human")
+semantic_fold(semantic_ped, semantic_adult, "Disease or Syndrome")
+semantic_fold(semantic_ped, semantic_adult, "Organism Attribute")
 
 
-(semantic_ped[semantic_ped[2].=="Family Group",:freq]/semantic_adult[semantic_adult[2].=="Family Group",:freq])[1]
-(semantic_ped[semantic_ped[2].=="Environmental Effect of Humans",:freq]/semantic_adult[semantic_adult[2].=="Environmental Effect of Humans",:freq])[1]
-(semantic_ped[semantic_ped[2].=="Conceptual Entity",:freq]/semantic_adult[semantic_adult[2].=="Conceptual Entity",:freq])[1]
-(semantic_ped[semantic_ped[2].=="Organization",:freq]/semantic_adult[semantic_adult[2].=="Organization",:freq])[1]
-(semantic_ped[semantic_ped[2].=="Regulation or Law",:freq]/semantic_adult[semantic_adult[2].=="Regulation or Law",:freq])[1]
+semantic_fold(semantic_ped, semantic_adult, "Family Group")
+semantic_fold(semantic_ped, semantic_adult, "Environmental Effect of Humans")
+semantic_fold(semantic_ped, semantic_adult, "Conceptual Entity")
+semantic_fold(semantic_ped, semantic_adult, "Organization")
+semantic_fold(semantic_ped, semantic_adult, "Regulation or Law")
 
 
-(semantic_adult[semantic_adult[2].=="Anatomical Abnormality",:freq]/semantic_ped[semantic_ped[2].=="Anatomical Abnormality",:freq])[1]
-#(semantic_adult[semantic_adult[2].=="Organophosphorus Compound",:freq]/semantic_ped[semantic_ped[2].=="Organophosphorus Compound",:freq])[1]
-(semantic_adult[semantic_adult[2].=="Body Substance",:freq]/semantic_ped[semantic_ped[2].=="Body Substance",:freq])[1]
-(semantic_adult[semantic_adult[2].=="Cell Function",:freq]/semantic_ped[semantic_ped[2].=="Cell Function",:freq])[1]
-(semantic_adult[semantic_adult[2].=="Neoplastic Process",:freq]/semantic_ped[semantic_ped[2].=="Neoplastic Process",:freq])[1]
+semantic_fold(semantic_ped, semantic_adult, "Anatomical Abnormality")
+semantic_fold(semantic_ped, semantic_adult, "Organophosphorus Compound")
+semantic_fold(semantic_ped, semantic_adult, "Body Substance")
+semantic_fold(semantic_ped, semantic_adult, "Cell Function")
+semantic_fold(semantic_ped, semantic_adult, "Neoplastic Process")
 
 
 function mesh_fold(mesh_ped, mesh_adult)
