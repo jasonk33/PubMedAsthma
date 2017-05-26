@@ -19,8 +19,8 @@ des_ind_dict_ped, disease_occurances_ped = umls_semantic_occurrences_2(db_ped, "
 des_ind_dict_adult, disease_occurances_adult = umls_semantic_occurrences_2(db_adult, "Disease or Syndrome", "Mental or Behavioral Dysfunction", "Neoplastic Process");
 itemsets_ped = occurances_to_itemsets(des_ind_dict_ped, disease_occurances_ped)
 itemsets_adult = occurances_to_itemsets(des_ind_dict_adult, disease_occurances_adult)
-
-
+association_rules_ped = apriori2(itemsets_ped, .01, .01, 2, 3, 0)
+association_rules_adult = apriori2(itemsets_adult, .01, .01, 2, 3, 0)
 
 
 

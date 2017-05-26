@@ -52,11 +52,10 @@ plot(bar(x=mesh_descrips_filtered[1:25,:mesh_descriptor], y=mesh_descrips_filter
 
 
 
-plot(scatter(x=association_rules[1], y=association_rules[2], mode="markers", marker_size=500.*association_rules[:support], marker_color=association_rules[:chi_squared]),Layout(height=600, width=600,margin=[1,1,1,1],title="Grouped Matrix for 43 Rules - Adult Asthma",yaxis_title="RHS",xaxis_title="LHS"))
+q=plot(scatter(x=association_rules[1], y=association_rules[2], mode="markers", marker_size=500.*association_rules[:support], marker_color=association_rules[:chi_squared]),Layout(height=600, width=600,margin=[1,1,1,1],title="Grouped Matrix for 43 Rules - Adult Asthma",yaxis_title="RHS",xaxis_title="LHS"))
 
 
 
-savefig(p, "Users/JasonKatz/Desktop/Code/PubMedAsthma/plot_test.pdf")
 
 
 
