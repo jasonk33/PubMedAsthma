@@ -327,3 +327,8 @@ end
 x_vals,y_vals=lhs_rhs_vals(association_rules);
 
 plot(scatter(x=x_vals, y=y_vals, mode="markers", marker_size=500.*association_rules[:support], marker_color=association_rules[:chi_squared]),Layout(height=600, width=600,margin=[1,1,1,1],title="Grouped Matrix for 43 Rules - Adult Asthma",yaxis_title="RHS",xaxis_title="LHS"))
+
+
+
+plot(scatter(x=association_rules_ped[1], y=association_rules_ped[2], mode="markers", marker_size=750.*association_rules_ped[:support], marker_color=association_rules_ped[:chi_squared]),Layout(height=600, width=600,margin=[1,1,1,1],title="Grouped Matrix for $(length(association_rules_ped[1])) Rules - Pediatric Asthma",yaxis_title="RHS",xaxis_title="LHS"))
+plot(scatter(x=association_rules_adult[1], y=association_rules_adult[2], mode="markers", marker_size=500.*association_rules_adult[:support], marker_color=association_rules_adult[:chi_squared]),Layout(height=600, width=600,margin=[1,1,1,1],title="Grouped Matrix for $(length(association_rules_adult[1])) Rules - Adult Asthma",yaxis_title="RHS",xaxis_title="LHS"))
