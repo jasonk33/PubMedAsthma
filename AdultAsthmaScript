@@ -8,46 +8,8 @@ using DataFrames
 using StatsBase
 using PlotlyJS
 using RCall
-using AssociationRules
 using Rsvg
 
-
-function split_rule!(dat)
-    n = size(dat, 1)
-    dat[:lhs] = Array{String,1}(n)
-    dat[:rhs] = Array{String,1}(n)
-    for i = 1:n
-        dat[i, :lhs], dat[i, :rhs] = split(dat[i, :rules], " => ")
-    end
-end
-
-function apriori2(dat::DataFrame, supp = 0.2, conf = 0.01, minlen = 1, maxlen = 10, minlift = 1.2)
-    @rput supp
-    @rput conf
-    @rput minlen
-    @rput maxlen
-    @rput minlift
-    @rput dat
-    R"library('arules')"
-    R"dat2 <- as(as(dat, 'matrix'),'itemMatrix')"
-    R"rules1 <- apriori(dat2, parameter = list(supp = supp, conf = conf, minlen = minlen, maxlen = maxlen), control = list(verbose = FALSE))"
-    R"rules1 <- if (length(rules1) == 0) data.frame() else rules1"
-    R"rules1 <- character_columns(as(rules1, \"data.frame\"))"
-    R"rules_sub <- subset(rules1, subset = lift > minlift)"
-    rules_df = @rget rules_sub;             # get dataframe from R
-    R"rm(dat, dat2, rules1, rules_sub, supp, conf, minlen, maxlen, minlift)"           # clean up R environment
-    split_rule!(rules_df);
-    rules_df = rules_df[:, [:lhs, :rhs, :support, :confidence, :lift]]
-    for i in 1:length(rules_df[1])
-        lhs = rules_df[i,1][2:end-1]
-        rhs = rules_df[i,2][2:end-1]
-        rules_df[i,1] = lhs
-        rules_df[i,2] = rhs
-    end
-    rules_df[:chi_squared] = length(dat[1]).*rules_df[:,:support].*(rules_df[:,:lift]-1).^2.*rules_df[:,:support].*rules_df[:,:confidence]./(rules_df[:,:confidence]-rules_df[:,:support])./(rules_df[:,:lift]-rules_df[:,:confidence])
-    sort!(rules_df, cols = :chi_squared, rev=true)
-    rules_df
-end
 
 search_term = "asthma[mh] AND adult[mh] NOT (infant[mh] OR child[mh] OR adolescent[mh]) AND (1800[Date - Publication] : 2/13/2014[Date - Publication])" #search term for adult asthma
 email= "jason_katz@brown.edu"
@@ -59,11 +21,7 @@ verbose = false
 append = false
 max_articles = 25000
 dbname="pubmed_asthma_adult"
-config = Dict(:host=>host,
-                 :dbname=>dbname,
-                 :username=>mysql_usr,
-                 :pswd=>ENV["MYSQL_PSWD"],
-                 :overwrite=>overwrite)
+config = Dict(:host=>host,:dbname=>dbname,:username=>mysql_usr,:pswd=>ENV["MYSQL_PSWD"],:overwrite=>overwrite)
 
 @time begin
     pubmed_search_and_save(email, search_term, max_articles, save_efetch_mysql, config, verbose) #get info from articles
@@ -71,270 +29,32 @@ end
 @time begin
     map_mesh_to_umls_async!(db, credentials; append_results=append) #get semantic types for articles
 end
+
 db = mysql_connect(host, mysql_usr, ENV["MYSQL_PSWD"], dbname)
 
-function get_mesh_semantics_filtered(db)
-    mesh_descriptor = mysql_execute(db, "SELECT * FROM mesh_descriptor;") #get mesh descriptor data from MySQL
-    mesh_heading = mysql_execute(db, "SELECT * FROM mesh_heading;") #get header data from MySQL
-    mesh2umls = mysql_execute(db, "SELECT * FROM mesh2umls;") #get data umls data from MySQL
-    rename!(mesh_descriptor, [:id, :name], [:did, :mesh_descriptor]) #change columns name for join
-    data = sort(join(mesh_descriptor, mesh_heading, on = :did)[:,[:mesh_descriptor, :pmid]], cols=:pmid) #data of mesh terms for each article
-    arts = unique(data[:pmid]) #article ID's
-    rename!(mesh2umls, :mesh, :mesh_descriptor) #change column name for join
-    data_semantic = join(data, mesh2umls, on = :mesh_descriptor) #data of semantic types for each article
-    semantic_counts = sort(collect(zip(values(countmap(data_semantic[:umls])),keys(countmap(data_semantic[:umls])))),rev=true) #counts for semantic types
-    semantics=DataFrame(Any,0,2)
-    for i in 1:length(semantic_counts)
-        semantic = [semantic_counts[i][1],semantic_counts[i][2]]
-        push!(semantics, semantic)
-    end #get semantic counts into usable form
-    frequency = DataArray(Float64, length(semantics[2]))
-    for i in 1:length(semantics[2])
-        freq = length(unique(data_semantic[data_semantic[:umls] .== semantics[i,2],2]))/length(arts)
-        frequency[i] = freq
-    end #calculate frequency for each semantic type
-    semantics[:freq]=frequency #add frequencies to data
-    sort!(semantics, cols = :freq, rev = true) #sort by frequency
-    rename!(semantics, [:x1, :x2], [:count, :semantic_type]) #rename columns
-    mesh_counts = sort(collect(zip(values(countmap(data[:mesh_descriptor])),keys(countmap(data[:mesh_descriptor])))),rev=true) #counts for mesh descriptors
-    mesh_descrips=DataFrame(Any,0,2)
-    for i in 1:length(mesh_counts)
-        mesh_descrip = [mesh_counts[i][1],mesh_counts[i][2]]
-        push!(mesh_descrips, mesh_descrip)
-    end #get mesh counts into usable form
-    frequency = DataArray(Float64, length(mesh_descrips[2]))
-    for i in 1:length(mesh_descrips[2])
-        freq = length(unique(data[data[:mesh_descriptor] .== mesh_descrips[i,2],2]))/length(arts)
-        frequency[i] = freq
-    end #calculate frequency for each mesh term
-    mesh_descrips[:freq]=frequency #add frequencies to data
-    sort!(mesh_descrips, cols = :freq, rev = true) #sort by frequency
-    rename!(mesh_descrips, [:x1, :x2], [:count, :mesh_descriptor]) #rename columns
-    umls_filtered = mesh2umls[(mesh2umls[:umls] .== "Disease or Syndrome") | (mesh2umls[:umls] .== "Mental or Behavioral Dysfunction") | (mesh2umls[:umls] .== "Neoplastic Process"),:] #filter by semantic type
-    data_filtered = join(data, umls_filtered, on = :mesh_descriptor) #new data after filtering
-    arts_filtered = unique(data_filtered[:pmid]) #article ID's after filtering
-    mesh_counts_filtered = sort(collect(zip(values(countmap(data_filtered[:mesh_descriptor])),keys(countmap(data_filtered[:mesh_descriptor])))),rev=true) #counts for mesh descriptors after filtering
-    mesh_descrips_filtered=DataFrame(Any,0,2)
-    for i in 1:length(mesh_counts_filtered)
-        mesh_descrip_filtered = [mesh_counts_filtered[i][1],mesh_counts_filtered[i][2]]
-        push!(mesh_descrips_filtered, mesh_descrip_filtered)
-    end #get mesh counts into usable form
-    frequency = DataArray(Float64, length(mesh_descrips_filtered[2]))
-    for i in 1:length(mesh_descrips_filtered[2])
-        freq = length(unique(data_filtered[data_filtered[:mesh_descriptor] .== mesh_descrips_filtered[i,2],2]))/length(arts_filtered)
-        frequency[i] = freq
-    end #calculate frequency for each mesh term
-    mesh_descrips_filtered[:freq]=frequency #add frequencies to data
-    sort!(mesh_descrips_filtered, cols = :freq, rev = true) #sort by frequency
-    rename!(mesh_descrips_filtered, [:x1, :x2], [:count, :mesh_descriptor]) #rename columns
-    return mesh_descrips,semantics, mesh_descrips_filtered
-end
-
 mesh_descrips,semantics,mesh_descrips_filtered=get_mesh_semantics_filtered(db)
-############################################################Results############################################################
-length(arts) #Number of articles matching search criteria
-length(mesh_descrips[:,2]) #Number of unique mesh descriptors
-length(semantics[:,3]) #Number of unique semantic types
-mesh_descrips #Counts and frequencies of mesh descriptors
-semantics #Counts and frequencies of semantic types
-plot(bar(x=mesh_descrips[1:25,:mesh_descriptor], y=mesh_descrips[1:25,:freq])) #Top 25 mesh descriptors
-plot(bar(x=semantics[1:10,:semantic_type], y=semantics[1:10,:freq])) #Top 10 semantic types
-length(mesh_descrips_filtered[:,:mesh_descriptor]) #Number of unique mesh descriptors after filtering
-mesh_descrips_filtered #Counts and frequencies of mesh descriptors after filtering
-p = plot(bar(x=mesh_descrips_filtered[1:25,:mesh_descriptor], y=mesh_descrips_filtered[1:25,:freq])) #Top 25 mesh descriptors after filtering
-#apriori2(itemsets_filtered, .01, .01, 2, 3, 0) #association rules for filtered data
-############################################################Results############################################################
-
-#apriori github
-
-#umls filtering function
-#jupyter notebook
-#histograms -- savefig(p, "./plot_test.pdf")
-#neural network
-#chi-squared
-#comparison table
-#readme - paper - results - comparison - link to notebook
-
-
-
-
-
-# Retrieve all mesh descriptors associated with the given umls_concepts
-function filter_mesh_by_concepts(db, umls_concepts...)
-    if length(umls_concepts) == 1
-        uc = string("'", replace(umls_concepts, "'", "''") , "'")
-        query  = mysql_execute(db, "SELECT mesh FROM mesh2umls
-        WHERE umls LIKE $uc ")
-    else
-        query_1 = string(" '", umls_concepts[1], "'")
-        queries = DataArray(String, length(umls_concepts)-1)
-        for i in 2:length(umls_concepts)
-            query = string(", '", umls_concepts[i], "'")
-            queries[i-1] = query
-        end
-        query_2 = join(queries)
-        query_joined = string("SELECT mesh FROM mesh2umls WHERE umls IN (", query_1, query_2, " )")
-        query  = mysql_execute(db, query_joined)
-    end
-    #return data array
-    return get_value(query.columns[1])
-end
-
-
-function umls_semantic_occurrences_2(db, umls_concepts...)
-
-    filtered_mesh = Set(filter_mesh_by_concepts(db, umls_concepts...))
-
-    #create a map of filtered descriptor name to index to guarantee order
-    des_ind_dict = Dict{String, Int}()
-
-    for (i, fm) in enumerate(filtered_mesh)
-        des_ind_dict[fm]= i
-    end
-
-    articles = all_pmids(db)
-
-    #create the data-matrix
-    disease_occurances = spzeros(length(filtered_mesh), length(articles))
-
-    #Can this process be more efficient using database join/select?
-    narticle = 0
-
-    for (i, pmid) in enumerate(articles)
-
-        #get all mesh descriptors associated with give article
-        article_mesh = Set(Entrez.DB.get_article_mesh(db, pmid))
-
-        #not all mesh are of the desired semantic type
-        article_filtered_mesh = intersect(article_mesh, filtered_mesh)
-
-        #skip if empty
-        if isempty(article_filtered_mesh)
-            continue
-        end
-
-        #otherwise form feature vector for this article
-        indices = []
-        for d in article_filtered_mesh
-            push!(indices, des_ind_dict[d])
-        end
-
-        #TO DO: Not sure about the type. Should we choose bool to save space
-        # or float to support opperations
-        article_dis_feature  = zeros(Int, (length(filtered_mesh),1))
-        article_dis_feature[indices] = 1
-
-        #append to data matrix
-        disease_occurances[:, i] = article_dis_feature
-        narticle+=1
-    end
-
-    println("-------------------------------------------------------------")
-    println("Found ", narticle, " articles with valid descriptors")
-    println("-------------------------------------------------------------")
-    return des_ind_dict, disease_occurances
-
-end
-
-
-function occurances_to_itemsets(des_ind_dict, disease_occurances)
-    name_dict = sort(collect(des_ind_dict), by=x->x[2])
-    col_names = DataArray(String, length(des_ind_dict))
-    for i in 1:length(des_ind_dict)
-        name = name_dict[i][1]
-        col_names[i] = name
-    end
-    itemsets = DataFrame(Matrix(convert(Array{Int64}, disease_occurances')))
-    names!(itemsets, [symbol(col_names[i]) for i in 1:length(col_names)])
-    return itemsets
-end
-
-
 
 des_ind_dict, disease_occurances = umls_semantic_occurrences_2(db, "Disease or Syndrome", "Mental or Behavioral Dysfunction", "Neoplastic Process")
 
 itemsets = occurances_to_itemsets(des_ind_dict, disease_occurances)
 
 association_rules = apriori2(itemsets, .01, .01, 2, 3, 0)
+############################################################Results############################################################
+unique(mysql_execute(db, "SELECT * FROM mesh_heading")[:pmid]) #Number of articles matching search criteria
+length(mesh_descrips[:,2]) #Number of unique mesh descriptors
+length(semantics[:,3]) #Number of unique semantic types
+plot(bar(x=mesh_descrips[1:25,:mesh_descriptor], y=mesh_descrips[1:25,:freq])) #Top 25 mesh descriptors
+plot(bar(x=semantics[1:10,:semantic_type], y=semantics[1:10,:freq])) #Top 10 semantic types
+length(mesh_descrips_filtered[:,:mesh_descriptor]) #Number of unique mesh descriptors after filtering
+plot(bar(x=mesh_descrips_filtered[1:25,:mesh_descriptor], y=mesh_descrips_filtered[1:25,:freq])) #Top 25 mesh descriptors after filtering
+############################################################Results############################################################
 
 
 
-plot(scatter(x=association_rules[1], y=association_rules[2], mode="markers", marker_size=1000.*association_rules[:support], marker_color=association_rules[:chi_squared]),Layout(height=1000, width=1000,margin=[1,1,1,1],title="Grouped Matrix for 43 Rules - Adult Asthma",yaxis_title="RHS",xaxis_title="LHS"))
 
-function lhs_rhs_vals(association_rules)
-    lhs_counts = collect(zip(values(countmap(association_rules[1])),keys(countmap(association_rules[1]))))
-    lhs_before=DataFrame(term=[])
-    for i in 1:length(lhs_counts)
-        left = [lhs_counts[i][2]]
-        push!(lhs_before, left)
-    end
+plot(scatter(x=association_rules[1], y=association_rules[2], mode="markers", marker_size=500.*association_rules[:support], marker_color=association_rules[:chi_squared]),Layout(height=600, width=600,margin=[1,1,1,1],title="Grouped Matrix for 43 Rules - Adult Asthma",yaxis_title="RHS",xaxis_title="LHS"))
 
-    rhs_counts = collect(zip(values(countmap(association_rules[2])),keys(countmap(association_rules[2]))))
-    rhs_before=DataFrame(term=[])
-    for i in 1:length(rhs_counts)
-        right = [rhs_counts[i][2]]
-        push!(rhs_before, right)
-    end
 
-    lhs = DataArray(String,length(lhs_counts))
-    for i in 1:length(lhs_counts)
-        name = string(lhs_counts[i][2], " : ", lhs_counts[i][1])
-        lhs[i]=name
-    end
-
-    rhs = DataArray(String,length(rhs_counts))
-    for i in 1:length(rhs_counts)
-        name = string(rhs_counts[i][2], " : ", rhs_counts[i][1])
-        rhs[i] = name
-    end
-
-    x_vals = DataArray(String, length(association_rules[1]))
-    for i in 1:length(association_rules[1])
-        x_val = lhs[association_rules[i,1].==lhs_before[1],1][1]
-        x_vals[i] = x_val
-    end
-
-    y_vals = DataArray(String, length(association_rules[1]))
-    for i in 1:length(association_rules[1])
-        y_val = rhs[association_rules[i,2].==rhs_before[1],1][1]
-        y_vals[i] = y_val
-    end
-
-    return x_vals, y_vals
-end
-
-x_vals,y_vals=lhs_rhs_vals(association_rules)
-
-plot(scatter(x=x_vals, y=y_vals, mode="markers", marker_size=1000.*association_rules[:support], marker_color=association_rules[:chi_squared]),Layout(height=1000, width=1000,margin=[1,1,1,1],title="Grouped Matrix for 43 Rules - Adult Asthma",yaxis_title="RHS",xaxis_title="LHS"))
-
-function change_bubbles(x_vals, y_vals)
-    dat2 = DataFrame(x=x_vals, y=y_vals)
-    counts = []
-    for i in 1:length(dat2[1])
-        yes = isequal(mode(x_vals), dat2[i,1]) | isequal(mode(y_vals), dat2[i,2])
-        if yes == false
-            count = i
-            push!(counts, count)
-        end
-    end
-    cc = convert(DataArray{Int}, counts)
-    datt = dat2[cc,:]
-    counts = []
-    for i in 1:length(dat2[1])
-        yes = isequal(mode(x_vals), dat2[i,1]) | isequal(mode(y_vals), dat2[i,2])
-        if yes == true
-            count = i
-            push!(counts, count)
-        end
-    end
-    cc = convert(DataArray{Int}, counts)
-    dattt = append!(datt,dat2[cc,:])
-    return dattt[1],dattt[2]
-end
-
-xx,yy=change_bubbles(x_vals, y_vals)
-
-plot(scatter(x=xx, y=yy, mode="markers", marker_size=1000.*association_rules[:support], marker_color=association_rules[:chi_squared]),Layout(height=1000, width=1000,margin=[1,1,1,1],title="Grouped Matrix for 43 Rules - Adult Asthma",yaxis_title="RHS",xaxis_title="LHS"))
 
 savefig(p, "Users/JasonKatz/Desktop/Code/PubMedAsthma/plot_test.pdf")
 
@@ -348,20 +68,6 @@ semantic_adult = readtable("/Users/JasonKatz/Desktop/Code/PubMedAsthma/Data/Adul
 mesh_ped = readtable("/Users/JasonKatz/Desktop/Code/PubMedAsthma/Data/Pediatric/MeshDescripsFiltered.csv")
 mesh_adult = readtable("/Users/JasonKatz/Desktop/Code/PubMedAsthma/Data/Adult/MeshDescripsFiltered.csv")
 
-function semantic_fold(semantic_ped, semantic_adult, term::String)
-    try
-        fold = (semantic_ped[semantic_ped[2].==term,:freq]/semantic_adult[semantic_adult[2].==term,:freq])[1]
-    catch
-        error("Term not in semantic data sets")
-    end
-    if fold < 1
-        fold = inv(fold)
-        println("Term associated more with adult asthma")
-    else
-        println("Term associated more with pediatric asthma")
-    end
-    return fold
-end
 
 semantic_fold(semantic_ped, semantic_adult, "Age Group")
 semantic_fold(semantic_ped, semantic_adult, "Population Group")
@@ -382,34 +88,5 @@ semantic_fold(semantic_ped, semantic_adult, "Organophosphorus Compound")
 semantic_fold(semantic_ped, semantic_adult, "Body Substance")
 semantic_fold(semantic_ped, semantic_adult, "Cell Function")
 semantic_fold(semantic_ped, semantic_adult, "Neoplastic Process")
-
-
-function mesh_fold(mesh_ped, mesh_adult)
-
-    mesh_ped[mesh_ped[:freq] .> .02,:]
-    mesh_adult[mesh_adult[:freq] .> .02,:]
-
-    mesh_ped_set = join(mesh_ped,mesh_adult,on=:mesh_descriptor, kind=:semi)
-    mesh_adult_set = join(mesh_adult,mesh_ped,on=:mesh_descriptor, kind=:semi)
-
-    mesh_set = join(mesh_ped,mesh_adult,on=:mesh_descriptor)
-    mesh_set_filt = mesh_set[mesh_set[:freq] + mesh_set[:freq_1] .>.005,:]
-
-    mesh_set_filt[:fold_ped]=Array(Float64, length(mesh_set_filt[1]))
-    for i in mesh_set_filt[2]
-        j = mesh_set_filt[mesh_set_filt[2].==i,1]
-        mesh_set_filt[mesh_set_filt[2].==i,:fold_ped] = (mesh_set_filt[mesh_set_filt[2].==i,:freq]/mesh_set_filt[mesh_set_filt[2].==i,:freq_1])[1]
-    end
-
-    mesh_set_filt[:fold_adult]=Array(Float64, length(mesh_set_filt[1]))
-    for i in mesh_set_filt[2]
-        j = mesh_set_filt[mesh_set_filt[2].==i,1]
-        mesh_set_filt[mesh_set_filt[2].==i,:fold_adult] = (mesh_set_filt[mesh_set_filt[2].==i,:freq_1]/mesh_set_filt[mesh_set_filt[2].==i,:freq])[1]
-    end
-
-    folds_mesh = sort(mesh_set_filt[(mesh_set_filt[:fold_ped].>5) | (mesh_set_filt[:fold_adult].>5),[2,6,7]],cols=2,rev=true)
-
-    return folds_mesh
-end
 
 mesh_fold(mesh_ped,mesh_adult)
