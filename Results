@@ -50,7 +50,19 @@ semantic_fold(semantics_ped, semantics_adult, "Body Substance")
 semantic_fold(semantics_ped, semantics_adult, "Cell Function")
 semantic_fold(semantics_ped, semantics_adult, "Neoplastic Process")
 
+
+mesh_descrips_filtered_ped[mesh_descrips_filtered_ped[:freq] .> .02,:]
+mesh_descrips_filtered_adult[mesh_descrips_filtered_adult[:freq] .> .02,:]
+
+
 mesh_fold(mesh_descrips_filtered_ped,mesh_descrips_filtered_adult)
+
+
+
+
+
+
+
 
 
 
