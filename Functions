@@ -253,15 +253,15 @@ function semantic_fold(semantic_ped, semantic_adult, term::String)
     try
         fold = (semantic_ped[semantic_ped[2].==term,:freq]/semantic_adult[semantic_adult[2].==term,:freq])[1]
     catch
-        error("Term not in semantic data sets")
+        error("The term $term is not in the semantic data sets")
     end
     if fold < 1
         fold = inv(fold)
-        println("Term associated more with adult asthma")
+        println("The term $term is associated more with adult asthma")
     else
-        println("Term associated more with pediatric asthma")
+        println("The term $term is associated more with pediatric asthma")
     end
-    return fold
+    return round(fold,2)
 end
 
 function mesh_fold(mesh_ped, mesh_adult)

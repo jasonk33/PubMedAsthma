@@ -30,25 +30,20 @@ plot(bar(x=mesh_descrips_filtered_adult[1:25,:mesh_descriptor], y=mesh_descrips_
 plot(scatter(x=association_rules_ped[1], y=association_rules_ped[2], mode="markers", marker_size=750.*association_rules_ped[:support], marker_color=association_rules_ped[:chi_squared]),Layout(height=600, width=600,margin=[1,1,1,1],title="Grouped Matrix for $(length(association_rules_ped[1])) Rules - Pediatric Asthma",yaxis_title="RHS",xaxis_title="LHS"))
 plot(scatter(x=association_rules_adult[1], y=association_rules_adult[2], mode="markers", marker_size=500.*association_rules_adult[:support], marker_color=association_rules_adult[:chi_squared]),Layout(height=600, width=600,margin=[1,1,1,1],title="Grouped Matrix for $(length(association_rules_adult[1])) Rules - Adult Asthma",yaxis_title="RHS",xaxis_title="LHS"))
 
-semantic_fold(semantics_ped, semantics_adult, "Age Group")
-semantic_fold(semantics_ped, semantics_adult, "Population Group")
-semantic_fold(semantics_ped, semantics_adult, "Human")
-semantic_fold(semantics_ped, semantics_adult, "Disease or Syndrome")
-semantic_fold(semantics_ped, semantics_adult, "Organism Attribute")
+for i in ["Age Group","Population Group","Human","Disease or Syndrome","Organism Attribute"]
+    println(semantic_fold(semantics_ped, semantics_adult,i)," is the fold difference")
+end
 
+for i in ["Family Group","Environmental Effect of Humans","Conceptual Entity","Organization","Regulation or Law"]
+    println(semantic_fold(semantics_ped, semantics_adult,i)," is the fold difference")
+end
 
-semantic_fold(semantics_ped, semantics_adult, "Family Group")
-semantic_fold(semantics_ped, semantics_adult, "Environmental Effect of Humans")
-semantic_fold(semantics_ped, semantics_adult, "Conceptual Entity")
-semantic_fold(semantics_ped, semantics_adult, "Organization")
-semantic_fold(semantics_ped, semantics_adult, "Regulation or Law")
-
-
-semantic_fold(semantics_ped, semantics_adult, "Anatomical Abnormality")
-semantic_fold(semantics_ped, semantics_adult, "Organophosphorus Compound")
-semantic_fold(semantics_ped, semantics_adult, "Body Substance")
-semantic_fold(semantics_ped, semantics_adult, "Cell Function")
-semantic_fold(semantics_ped, semantics_adult, "Neoplastic Process")
+for i in ["Anatomical Abnormality","Organophosphorus Compound","Body Substance","Cell Function","Neoplastic Process"]
+    try println(semantic_fold(semantics_ped, semantics_adult,i)," is the fold difference")
+    catch
+        println("The term $i is not in the semantic data sets")
+    end
+end
 
 
 mesh_descrips_filtered_ped[mesh_descrips_filtered_ped[:freq] .> .02,:]
@@ -56,10 +51,6 @@ mesh_descrips_filtered_adult[mesh_descrips_filtered_adult[:freq] .> .02,:]
 
 
 mesh_fold(mesh_descrips_filtered_ped,mesh_descrips_filtered_adult)
-
-
-
-
 
 
 
