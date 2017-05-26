@@ -332,3 +332,100 @@ plot(scatter(x=x_vals, y=y_vals, mode="markers", marker_size=500.*association_ru
 
 plot(scatter(x=association_rules_ped[1], y=association_rules_ped[2], mode="markers", marker_size=750.*association_rules_ped[:support], marker_color=association_rules_ped[:chi_squared]),Layout(height=600, width=600,margin=[1,1,1,1],title="Grouped Matrix for $(length(association_rules_ped[1])) Rules - Pediatric Asthma",yaxis_title="RHS",xaxis_title="LHS"))
 plot(scatter(x=association_rules_adult[1], y=association_rules_adult[2], mode="markers", marker_size=500.*association_rules_adult[:support], marker_color=association_rules_adult[:chi_squared]),Layout(height=600, width=600,margin=[1,1,1,1],title="Grouped Matrix for $(length(association_rules_adult[1])) Rules - Adult Asthma",yaxis_title="RHS",xaxis_title="LHS"))
+
+
+
+
+########adultasthmascript##########
+using BioMedQuery
+using BioMedQuery.UMLS
+using BioMedQuery.Processes
+using BioMedQuery.Entrez
+using BioMedQuery.Entrez.DB
+using MySQL
+using DataFrames
+using StatsBase
+using PlotlyJS
+using RCall
+using Rsvg
+
+
+search_term = "asthma[mh] AND adult[mh] NOT (infant[mh] OR child[mh] OR adolescent[mh]) AND (1800[Date - Publication] : 2/13/2014[Date - Publication])" #search term for adult asthma
+email= "jason_katz@brown.edu"
+host="Jasons-MacBook-Air-2.local"
+mysql_usr="jasonk33"
+credentials = Credentials("jasonk33", ENV["UMLS_PSWD"])
+overwrite=true
+verbose = false
+append = false
+max_articles = 25000
+dbname="pubmed_asthma_adult"
+config = Dict(:host=>host,:dbname=>dbname,:username=>mysql_usr,:pswd=>ENV["MYSQL_PSWD"],:overwrite=>overwrite)
+
+@time begin
+    pubmed_search_and_save(email, search_term, max_articles, save_efetch_mysql, config, verbose) #get info from articles
+end
+@time begin
+    map_mesh_to_umls_async!(db, credentials; append_results=append) #get semantic types for articles
+end
+
+db = mysql_connect(host, mysql_usr, ENV["MYSQL_PSWD"], dbname)
+
+mesh_descrips,semantics,mesh_descrips_filtered=get_mesh_semantics_filtered(db)
+
+des_ind_dict, disease_occurances = umls_semantic_occurrences_2(db, "Disease or Syndrome", "Mental or Behavioral Dysfunction", "Neoplastic Process")
+
+itemsets = occurances_to_itemsets(des_ind_dict, disease_occurances)
+
+association_rules = apriori2(itemsets, .01, .01, 2, 3, 0)
+############################################################Results############################################################
+unique(mysql_execute(db, "SELECT * FROM mesh_heading")[:pmid]) #Number of articles matching search criteria
+length(mesh_descrips[:,2]) #Number of unique mesh descriptors
+length(semantics[:,3]) #Number of unique semantic types
+plot(bar(x=mesh_descrips[1:25,:mesh_descriptor], y=mesh_descrips[1:25,:freq])) #Top 25 mesh descriptors
+plot(bar(x=semantics[1:10,:semantic_type], y=semantics[1:10,:freq])) #Top 10 semantic types
+length(mesh_descrips_filtered[:,:mesh_descriptor]) #Number of unique mesh descriptors after filtering
+plot(bar(x=mesh_descrips_filtered[1:25,:mesh_descriptor], y=mesh_descrips_filtered[1:25,:freq])) #Top 25 mesh descriptors after filtering
+############################################################Results############################################################
+
+
+
+
+q=plot(scatter(x=association_rules[1], y=association_rules[2], mode="markers", marker_size=500.*association_rules[:support], marker_color=association_rules[:chi_squared]),Layout(height=600, width=600,margin=[1,1,1,1],title="Grouped Matrix for 43 Rules - Adult Asthma",yaxis_title="RHS",xaxis_title="LHS"))
+
+
+
+
+
+
+
+#####################################################################################
+
+semantic_ped = readtable("/Users/JasonKatz/Desktop/Code/PubMedAsthma/Data/Pediatric/Semantics.csv")
+semantic_adult = readtable("/Users/JasonKatz/Desktop/Code/PubMedAsthma/Data/Adult/Semantics.csv")
+mesh_ped = readtable("/Users/JasonKatz/Desktop/Code/PubMedAsthma/Data/Pediatric/MeshDescripsFiltered.csv")
+mesh_adult = readtable("/Users/JasonKatz/Desktop/Code/PubMedAsthma/Data/Adult/MeshDescripsFiltered.csv")
+
+
+semantic_fold(semantic_ped, semantic_adult, "Age Group")
+semantic_fold(semantic_ped, semantic_adult, "Population Group")
+semantic_fold(semantic_ped, semantic_adult, "Human")
+semantic_fold(semantic_ped, semantic_adult, "Disease or Syndrome")
+semantic_fold(semantic_ped, semantic_adult, "Organism Attribute")
+
+
+semantic_fold(semantic_ped, semantic_adult, "Family Group")
+semantic_fold(semantic_ped, semantic_adult, "Environmental Effect of Humans")
+semantic_fold(semantic_ped, semantic_adult, "Conceptual Entity")
+semantic_fold(semantic_ped, semantic_adult, "Organization")
+semantic_fold(semantic_ped, semantic_adult, "Regulation or Law")
+
+
+semantic_fold(semantic_ped, semantic_adult, "Anatomical Abnormality")
+semantic_fold(semantic_ped, semantic_adult, "Organophosphorus Compound")
+semantic_fold(semantic_ped, semantic_adult, "Body Substance")
+semantic_fold(semantic_ped, semantic_adult, "Cell Function")
+semantic_fold(semantic_ped, semantic_adult, "Neoplastic Process")
+
+mesh_fold(mesh_ped,mesh_adult)
+#############################
