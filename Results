@@ -21,9 +21,36 @@ itemsets_ped = occurances_to_itemsets(des_ind_dict_ped, disease_occurances_ped)
 itemsets_adult = occurances_to_itemsets(des_ind_dict_adult, disease_occurances_adult)
 association_rules_ped = apriori2(itemsets_ped, .01, .01, 2, 3, 0)
 association_rules_adult = apriori2(itemsets_adult, .01, .01, 2, 3, 0)
+plot(bar(x=mesh_descrips_ped[1:25,:mesh_descriptor], y=mesh_descrips_ped[1:25,:freq]))
+plot(bar(x=mesh_descrips_adult[1:25,:mesh_descriptor], y=mesh_descrips_adult[1:25,:freq]))
+plot(bar(x=semantics_ped[1:10,:semantic_type], y=semantics_ped[1:10,:freq]))
+plot(bar(x=semantics_adult[1:10,:semantic_type], y=semantics_adult[1:10,:freq]))
+plot(bar(x=mesh_descrips_filtered_ped[1:25,:mesh_descriptor], y=mesh_descrips_filtered_ped[1:25,:freq]))
+plot(bar(x=mesh_descrips_filtered_adult[1:25,:mesh_descriptor], y=mesh_descrips_filtered_adult[1:25,:freq]))
+plot(scatter(x=association_rules_ped[1], y=association_rules_ped[2], mode="markers", marker_size=750.*association_rules_ped[:support], marker_color=association_rules_ped[:chi_squared]),Layout(height=600, width=600,margin=[1,1,1,1],title="Grouped Matrix for $(length(association_rules_ped[1])) Rules - Pediatric Asthma",yaxis_title="RHS",xaxis_title="LHS"))
+plot(scatter(x=association_rules_adult[1], y=association_rules_adult[2], mode="markers", marker_size=500.*association_rules_adult[:support], marker_color=association_rules_adult[:chi_squared]),Layout(height=600, width=600,margin=[1,1,1,1],title="Grouped Matrix for $(length(association_rules_adult[1])) Rules - Adult Asthma",yaxis_title="RHS",xaxis_title="LHS"))
+
+semantic_fold(semantics_ped, semantics_adult, "Age Group")
+semantic_fold(semantics_ped, semantics_adult, "Population Group")
+semantic_fold(semantics_ped, semantics_adult, "Human")
+semantic_fold(semantics_ped, semantics_adult, "Disease or Syndrome")
+semantic_fold(semantics_ped, semantics_adult, "Organism Attribute")
 
 
+semantic_fold(semantics_ped, semantics_adult, "Family Group")
+semantic_fold(semantics_ped, semantics_adult, "Environmental Effect of Humans")
+semantic_fold(semantics_ped, semantics_adult, "Conceptual Entity")
+semantic_fold(semantics_ped, semantics_adult, "Organization")
+semantic_fold(semantics_ped, semantics_adult, "Regulation or Law")
 
+
+semantic_fold(semantics_ped, semantics_adult, "Anatomical Abnormality")
+semantic_fold(semantics_ped, semantics_adult, "Organophosphorus Compound")
+semantic_fold(semantics_ped, semantics_adult, "Body Substance")
+semantic_fold(semantics_ped, semantics_adult, "Cell Function")
+semantic_fold(semantics_ped, semantics_adult, "Neoplastic Process")
+
+mesh_fold(mesh_descrips_filtered_ped,mesh_descrips_filtered_adult)
 
 
 
