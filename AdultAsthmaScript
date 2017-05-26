@@ -1,15 +1,16 @@
+using BioMedQuery
+using BioMedQuery.UMLS
 using BioMedQuery.Processes
 using BioMedQuery.Entrez
+using BioMedQuery.Entrez.DB
 using MySQL
 using DataFrames
 using StatsBase
-using BioMedQuery.UMLS
-using BioMedQuery
 using PlotlyJS
 using RCall
 using AssociationRules
 using Rsvg
-using BioMedQuery.Entrez.DB
+
 
 function split_rule!(dat)
     n = size(dat, 1)
@@ -65,68 +66,71 @@ config = Dict(:host=>host,
                  :overwrite=>overwrite)
 
 @time begin
-    db = pubmed_search_and_save(email, search_term, max_articles, save_efetch_mysql, config, verbose) #get info from articles
+    pubmed_search_and_save(email, search_term, max_articles, save_efetch_mysql, config, verbose) #get info from articles
 end
-
-con = mysql_connect(host, mysql_usr, ENV["MYSQL_PSWD"], dbname)
-mesh_descriptor = mysql_execute(con, "SELECT * FROM mesh_descriptor;") #get mesh descriptor data from MySQL
-mesh_heading = mysql_execute(con, "SELECT * FROM mesh_heading;") #get header data from MySQL
 @time begin
-    map_mesh_to_umls_async!(con, credentials; append_results=append) #get semantic types for articles
+    map_mesh_to_umls_async!(db, credentials; append_results=append) #get semantic types for articles
 end
-mesh2umls = mysql_execute(con, "SELECT * FROM mesh2umls;") #get data umls data from MySQL
-mysql_disconnect(con)
-rename!(mesh_descriptor, [:id, :name], [:did, :mesh_descriptor]) #change columns name for join
-data = sort(join(mesh_descriptor, mesh_heading, on = :did)[:,[:mesh_descriptor, :pmid]], cols=:pmid) #data of mesh terms for each article
-arts = unique(data[:pmid]) #article ID's
-rename!(mesh2umls, :mesh, :mesh_descriptor) #change column name for join
-data_semantic = join(data, mesh2umls, on = :mesh_descriptor) #data of semantic types for each article
-semantic_counts = sort(collect(zip(values(countmap(data_semantic[:umls])),keys(countmap(data_semantic[:umls])))),rev=true) #counts for semantic types
-semantics=DataFrame(Any,0,2)
-for i in 1:length(semantic_counts)
-    semantic = [semantic_counts[i][1],semantic_counts[i][2]]
-    push!(semantics, semantic)
-end #get semantic counts into usable form
-frequency = DataArray(Float64, length(semantics[2]))
-for i in 1:length(semantics[2])
-    freq = length(unique(data_semantic[data_semantic[:umls] .== semantics[i,2],2]))/length(arts)
-    frequency[i] = freq
-end #calculate frequency for each semantic type
-semantics[:freq]=frequency #add frequencies to data
-sort!(semantics, cols = :freq, rev = true) #sort by frequency
-rename!(semantics, [:x1, :x2], [:count, :semantic_type]) #rename columns
-mesh_counts = sort(collect(zip(values(countmap(data[:mesh_descriptor])),keys(countmap(data[:mesh_descriptor])))),rev=true) #counts for mesh descriptors
-mesh_descrips=DataFrame(Any,0,2)
-for i in 1:length(mesh_counts)
-    mesh_descrip = [mesh_counts[i][1],mesh_counts[i][2]]
-    push!(mesh_descrips, mesh_descrip)
-end #get mesh counts into usable form
-frequency = DataArray(Float64, length(mesh_descrips[2]))
-for i in 1:length(mesh_descrips[2])
-    freq = length(unique(data[data[:mesh_descriptor] .== mesh_descrips[i,2],2]))/length(arts)
-    frequency[i] = freq
-end #calculate frequency for each mesh term
-mesh_descrips[:freq]=frequency #add frequencies to data
-sort!(mesh_descrips, cols = :freq, rev = true) #sort by frequency
-rename!(mesh_descrips, [:x1, :x2], [:count, :mesh_descriptor]) #rename columns
-umls_filtered = mesh2umls[(mesh2umls[:umls] .== "Disease or Syndrome") | (mesh2umls[:umls] .== "Mental or Behavioral Dysfunction") | (mesh2umls[:umls] .== "Neoplastic Process"),:] #filter by semantic type
-data_filtered = join(data, umls_filtered, on = :mesh_descriptor) #new data after filtering
-arts_filtered = unique(data_filtered[:pmid]) #article ID's after filtering
-mesh_counts_filtered = sort(collect(zip(values(countmap(data_filtered[:mesh_descriptor])),keys(countmap(data_filtered[:mesh_descriptor])))),rev=true) #counts for mesh descriptors after filtering
-mesh_descrips_filtered=DataFrame(Any,0,2)
-for i in 1:length(mesh_counts_filtered)
-    mesh_descrip_filtered = [mesh_counts_filtered[i][1],mesh_counts_filtered[i][2]]
-    push!(mesh_descrips_filtered, mesh_descrip_filtered)
-end #get mesh counts into usable form
-frequency = DataArray(Float64, length(mesh_descrips_filtered[2]))
-for i in 1:length(mesh_descrips_filtered[2])
-    freq = length(unique(data_filtered[data_filtered[:mesh_descriptor] .== mesh_descrips_filtered[i,2],2]))/length(arts_filtered)
-    frequency[i] = freq
-end #calculate frequency for each mesh term
-mesh_descrips_filtered[:freq]=frequency #add frequencies to data
-sort!(mesh_descrips_filtered, cols = :freq, rev = true) #sort by frequency
-rename!(mesh_descrips_filtered, [:x1, :x2], [:count, :mesh_descriptor]) #rename columns
+db = mysql_connect(host, mysql_usr, ENV["MYSQL_PSWD"], dbname)
 
+function get_mesh_semantics_filtered(db)
+    mesh_descriptor = mysql_execute(db, "SELECT * FROM mesh_descriptor;") #get mesh descriptor data from MySQL
+    mesh_heading = mysql_execute(db, "SELECT * FROM mesh_heading;") #get header data from MySQL
+    mesh2umls = mysql_execute(db, "SELECT * FROM mesh2umls;") #get data umls data from MySQL
+    rename!(mesh_descriptor, [:id, :name], [:did, :mesh_descriptor]) #change columns name for join
+    data = sort(join(mesh_descriptor, mesh_heading, on = :did)[:,[:mesh_descriptor, :pmid]], cols=:pmid) #data of mesh terms for each article
+    arts = unique(data[:pmid]) #article ID's
+    rename!(mesh2umls, :mesh, :mesh_descriptor) #change column name for join
+    data_semantic = join(data, mesh2umls, on = :mesh_descriptor) #data of semantic types for each article
+    semantic_counts = sort(collect(zip(values(countmap(data_semantic[:umls])),keys(countmap(data_semantic[:umls])))),rev=true) #counts for semantic types
+    semantics=DataFrame(Any,0,2)
+    for i in 1:length(semantic_counts)
+        semantic = [semantic_counts[i][1],semantic_counts[i][2]]
+        push!(semantics, semantic)
+    end #get semantic counts into usable form
+    frequency = DataArray(Float64, length(semantics[2]))
+    for i in 1:length(semantics[2])
+        freq = length(unique(data_semantic[data_semantic[:umls] .== semantics[i,2],2]))/length(arts)
+        frequency[i] = freq
+    end #calculate frequency for each semantic type
+    semantics[:freq]=frequency #add frequencies to data
+    sort!(semantics, cols = :freq, rev = true) #sort by frequency
+    rename!(semantics, [:x1, :x2], [:count, :semantic_type]) #rename columns
+    mesh_counts = sort(collect(zip(values(countmap(data[:mesh_descriptor])),keys(countmap(data[:mesh_descriptor])))),rev=true) #counts for mesh descriptors
+    mesh_descrips=DataFrame(Any,0,2)
+    for i in 1:length(mesh_counts)
+        mesh_descrip = [mesh_counts[i][1],mesh_counts[i][2]]
+        push!(mesh_descrips, mesh_descrip)
+    end #get mesh counts into usable form
+    frequency = DataArray(Float64, length(mesh_descrips[2]))
+    for i in 1:length(mesh_descrips[2])
+        freq = length(unique(data[data[:mesh_descriptor] .== mesh_descrips[i,2],2]))/length(arts)
+        frequency[i] = freq
+    end #calculate frequency for each mesh term
+    mesh_descrips[:freq]=frequency #add frequencies to data
+    sort!(mesh_descrips, cols = :freq, rev = true) #sort by frequency
+    rename!(mesh_descrips, [:x1, :x2], [:count, :mesh_descriptor]) #rename columns
+    umls_filtered = mesh2umls[(mesh2umls[:umls] .== "Disease or Syndrome") | (mesh2umls[:umls] .== "Mental or Behavioral Dysfunction") | (mesh2umls[:umls] .== "Neoplastic Process"),:] #filter by semantic type
+    data_filtered = join(data, umls_filtered, on = :mesh_descriptor) #new data after filtering
+    arts_filtered = unique(data_filtered[:pmid]) #article ID's after filtering
+    mesh_counts_filtered = sort(collect(zip(values(countmap(data_filtered[:mesh_descriptor])),keys(countmap(data_filtered[:mesh_descriptor])))),rev=true) #counts for mesh descriptors after filtering
+    mesh_descrips_filtered=DataFrame(Any,0,2)
+    for i in 1:length(mesh_counts_filtered)
+        mesh_descrip_filtered = [mesh_counts_filtered[i][1],mesh_counts_filtered[i][2]]
+        push!(mesh_descrips_filtered, mesh_descrip_filtered)
+    end #get mesh counts into usable form
+    frequency = DataArray(Float64, length(mesh_descrips_filtered[2]))
+    for i in 1:length(mesh_descrips_filtered[2])
+        freq = length(unique(data_filtered[data_filtered[:mesh_descriptor] .== mesh_descrips_filtered[i,2],2]))/length(arts_filtered)
+        frequency[i] = freq
+    end #calculate frequency for each mesh term
+    mesh_descrips_filtered[:freq]=frequency #add frequencies to data
+    sort!(mesh_descrips_filtered, cols = :freq, rev = true) #sort by frequency
+    rename!(mesh_descrips_filtered, [:x1, :x2], [:count, :mesh_descriptor]) #rename columns
+    return mesh_descrips,semantics, mesh_descrips_filtered
+end
+
+mesh_descrips,semantics,mesh_descrips_filtered=get_mesh_semantics_filtered(db)
 ############################################################Results############################################################
 length(arts) #Number of articles matching search criteria
 length(mesh_descrips[:,2]) #Number of unique mesh descriptors
