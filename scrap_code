@@ -429,3 +429,94 @@ semantic_fold(semantic_ped, semantic_adult, "Neoplastic Process")
 
 mesh_fold(mesh_ped,mesh_adult)
 #############################
+
+
+
+
+function lhs_rhs_vals(association_rules)
+    lhs_counts = collect(zip(values(countmap(association_rules[1])),keys(countmap(association_rules[1]))))
+    lhs_before=DataFrame(term=[])
+    for i in 1:length(lhs_counts)
+        left = [lhs_counts[i][2]]
+        push!(lhs_before, left)
+    end
+
+    rhs_counts = collect(zip(values(countmap(association_rules[2])),keys(countmap(association_rules[2]))))
+    rhs_before=DataFrame(term=[])
+    for i in 1:length(rhs_counts)
+        right = [rhs_counts[i][2]]
+        push!(rhs_before, right)
+    end
+
+    lhs = DataArray(String,length(lhs_counts))
+    for i in 1:length(lhs_counts)
+        name = string(lhs_counts[i][2], " : ", lhs_counts[i][1])
+        lhs[i]=name
+    end
+
+    rhs = DataArray(String,length(rhs_counts))
+    for i in 1:length(rhs_counts)
+        name = string(rhs_counts[i][2], " : ", rhs_counts[i][1])
+        rhs[i] = name
+    end
+
+    x_vals = DataArray(String, length(association_rules[1]))
+    for i in 1:length(association_rules[1])
+        x_val = lhs[association_rules[i,1].==lhs_before[1],1][1]
+        x_vals[i] = x_val
+    end
+
+    y_vals = DataArray(String, length(association_rules[1]))
+    for i in 1:length(association_rules[1])
+        y_val = rhs[association_rules[i,2].==rhs_before[1],1][1]
+        y_vals[i] = y_val
+    end
+
+    return x_vals, y_vals
+end
+
+function change_bubbles(x_vals, y_vals)
+    dat2 = DataFrame(x=x_vals, y=y_vals)
+    counts = []
+    for i in 1:length(dat2[1])
+        yes = isequal(mode(x_vals), dat2[i,1]) | isequal(mode(y_vals), dat2[i,2])
+        if yes == false
+            count = i
+            push!(counts, count)
+        end
+    end
+    cc = convert(DataArray{Int}, counts)
+    datt = dat2[cc,:]
+    counts = []
+    for i in 1:length(dat2[1])
+        yes = isequal(mode(x_vals), dat2[i,1]) | isequal(mode(y_vals), dat2[i,2])
+        if yes == true
+            count = i
+            push!(counts, count)
+        end
+    end
+    cc = convert(DataArray{Int}, counts)
+    dattt = append!(datt,dat2[cc,:])
+    return dattt[1],dattt[2]
+end
+
+
+function filter_mesh_by_concepts(db, umls_concepts...)
+    if length(umls_concepts) == 1
+        uc = string("'", replace(umls_concepts, "'", "''") , "'")
+        query  = mysql_execute(db, "SELECT mesh FROM mesh2umls
+        WHERE umls LIKE $uc ")
+    else
+        query_1 = string(" '", umls_concepts[1], "'")
+        queries = DataArray(String, length(umls_concepts)-1)
+        for i in 2:length(umls_concepts)
+            query = string(", '", umls_concepts[i], "'")
+            queries[i-1] = query
+        end
+        query_2 = join(queries)
+        query_joined = string("SELECT mesh FROM mesh2umls WHERE umls IN (", query_1, query_2, " )")
+        query  = mysql_execute(db, query_joined)
+    end
+    #return data array
+    return get_value(query.columns[1])
+end

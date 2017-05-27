@@ -11,26 +11,26 @@ verbose = false
 append = false
 max_articles = 25000
 
-search_term = "asthma[mh] AND adult[mh] NOT (infant[mh] OR child[mh] OR adolescent[mh]) AND (1800[Date - Publication] : 2/13/2014[Date - Publication])"
-dbname="pubmed_asthma_adult"
-config = Dict(:host=>host,:dbname=>dbname,:username=>mysql_usr,:pswd=>ENV["MYSQL_PSWD"],:overwrite=>overwrite)
+search_term_adult = "asthma[mh] AND adult[mh] NOT (infant[mh] OR child[mh] OR adolescent[mh]) AND (1800[Date - Publication] : 2/13/2014[Date - Publication])"
+dbname_adult="pubmed_asthma_adult"
+config = Dict(:host=>host,:dbname=>dbname_adult,:username=>mysql_usr,:pswd=>ENV["MYSQL_PSWD"],:overwrite=>overwrite)
 
 @time begin
-    db_adult = pubmed_search_and_save(email, search_term, max_articles, save_efetch_mysql, config, verbose)
+    db_adult = pubmed_search_and_save(email, search_term_adult, max_articles, save_efetch_mysql, config, verbose)
 end
 @time begin
-    map_mesh_to_umls_async!(db, credentials; append_results=append)
+    map_mesh_to_umls_async!(db_adult, credentials; append_results=append)
 end
 
-search_term = "asthma[mh] AND (infant[mh] OR child[mh] OR adolescent[mh]) NOT adult[mh] AND (1800[Date - Publication] : 2/13/2014[Date - Publication])" #search term for pediatric asthma
-dbname="pubmed_asthma_pediatric"
-config = Dict(:host=>host,:dbname=>dbname,:username=>mysql_usr,:pswd=>ENV["MYSQL_PSWD"],:overwrite=>overwrite)
+search_term_pediatric = "asthma[mh] AND (infant[mh] OR child[mh] OR adolescent[mh]) NOT adult[mh] AND (1800[Date - Publication] : 2/13/2014[Date - Publication])" #search term for pediatric asthma
+dbname_pediatric="pubmed_asthma_pediatric"
+config = Dict(:host=>host,:dbname=>dbname_pediatric,:username=>mysql_usr,:pswd=>ENV["MYSQL_PSWD"],:overwrite=>overwrite)
 
 @time begin
-    db_ped = pubmed_search_and_save(email, search_term, max_articles, save_efetch_mysql, config, verbose) #get info from articles
+    db_ped = pubmed_search_and_save(email, search_term_pediatric, max_articles, save_efetch_mysql, config, verbose) #get info from articles
 end
 @time begin
-    map_mesh_to_umls_async!(db, credentials; append_results=append)
+    map_mesh_to_umls_async!(db_ped, credentials; append_results=append)
 end
 
 mysql_disconnect(db_ped)
