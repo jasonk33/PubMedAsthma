@@ -1,4 +1,4 @@
-# Pub-Med-Data-Analysis
+# Pub Med Asthma
 Executed queries with UMLS (Unified Medical Language System)
 
 Built pipeline from PubMed to Julia (using MySQL)
