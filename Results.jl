@@ -5,7 +5,7 @@ using BioMedQuery.Entrez
 using BioMedQuery.Entrez.DB
 using MySQL
 using DataFrames
-using DataTables
+#using DataTables
 using StatsBase
 using PlotlyJS
 using RCall
@@ -29,6 +29,7 @@ plot(bar(x=semantics_ped[1:10,:semantic_type], y=semantics_ped[1:10,:freq]))
 plot(bar(x=semantics_adult[1:10,:semantic_type], y=semantics_adult[1:10,:freq]))
 plot(bar(x=mesh_descrips_filtered_ped[1:25,:mesh_descriptor], y=mesh_descrips_filtered_ped[1:25,:freq]))
 plot(bar(x=mesh_descrips_filtered_adult[1:25,:mesh_descriptor], y=mesh_descrips_filtered_adult[1:25,:freq]))
+savefig(p, "/Users/JasonKatz/Desktop/Code/PubMedAsthma/Plots/Top10Semantics.pdf")
 
 
 folds=[]

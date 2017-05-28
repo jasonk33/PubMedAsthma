@@ -1,7 +1,17 @@
+using BioMedQuery
+using BioMedQuery.UMLS
+using BioMedQuery.Processes
+using BioMedQuery.Entrez
+using BioMedQuery.Entrez.DB
+using MySQL
 using DataFrames
 using StatsBase
-using AssociationRules
+using PlotlyJS
 using RCall
+using AssociationRules
+using Suppressor
+using ImageView
+using Images
 
 function split_rule!(dat)
     n = size(dat, 1)
