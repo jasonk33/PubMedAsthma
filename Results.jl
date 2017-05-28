@@ -5,12 +5,12 @@ using BioMedQuery.Entrez
 using BioMedQuery.Entrez.DB
 using MySQL
 using DataFrames
-#using DataTables
 using StatsBase
 using PlotlyJS
 using RCall
 using AssociationRules
 using Rsvg
+#using DataTables
 
 db_ped = mysql_connect("Jasons-MacBook-Air-2.local", "jasonk33", ENV["MYSQL_PSWD"], "pubmed_asthma_pediatric")
 db_adult = mysql_connect("Jasons-MacBook-Air-2.local", "jasonk33", ENV["MYSQL_PSWD"], "pubmed_asthma_adult")
@@ -23,13 +23,12 @@ itemsets_ped = occurances_to_itemsets(des_ind_dict_ped, disease_occurances_ped)
 itemsets_adult = occurances_to_itemsets(des_ind_dict_adult, disease_occurances_adult)
 association_rules_ped = apriori2(itemsets_ped, .01, .01, 2, 3, 0)
 association_rules_adult = apriori2(itemsets_adult, .01, .01, 2, 3, 0)
-#plot(bar(x=mesh_descrips_ped[1:25,:mesh_descriptor], y=mesh_descrips_ped[1:25,:freq]))
-#plot(bar(x=mesh_descrips_adult[1:25,:mesh_descriptor], y=mesh_descrips_adult[1:25,:freq]))
-# plot(bar(x=semantics_ped[1:10,:semantic_type], y=semantics_ped[1:10,:freq]))
-# plot(bar(x=semantics_adult[1:10,:semantic_type], y=semantics_adult[1:10,:freq]))
-# plot(bar(x=mesh_descrips_filtered_ped[1:25,:mesh_descriptor], y=mesh_descrips_filtered_ped[1:25,:freq]))
-# plot(bar(x=mesh_descrips_filtered_adult[1:25,:mesh_descriptor], y=mesh_descrips_filtered_adult[1:25,:freq]))
-# savefig(p, "/Users/JasonKatz/Desktop/Code/PubMedAsthma/Plots/Top10Semantics.pdf")
+plot(bar(x=mesh_descrips_ped[1:25,:mesh_descriptor], y=mesh_descrips_ped[1:25,:freq]))
+plot(bar(x=mesh_descrips_adult[1:25,:mesh_descriptor], y=mesh_descrips_adult[1:25,:freq]))
+plot(bar(x=semantics_ped[1:10,:semantic_type], y=semantics_ped[1:10,:freq]))
+plot(bar(x=semantics_adult[1:10,:semantic_type], y=semantics_adult[1:10,:freq]))
+plot(bar(x=mesh_descrips_filtered_ped[1:25,:mesh_descriptor], y=mesh_descrips_filtered_ped[1:25,:freq]))
+plot(bar(x=mesh_descrips_filtered_adult[1:25,:mesh_descriptor], y=mesh_descrips_filtered_adult[1:25,:freq]))
 
 
 folds=[]
@@ -39,8 +38,8 @@ for i in join(semantics_ped, semantics_adult, on = :semantic_type)[2]
 end
 round(mean(folds.<2),2)
 
-#isequal(sort(semantics_ped[1:5,2]),sort(semantics_adult[1:5,2]))
-#semantics_ped[1:5,2]
+isequal(sort(semantics_ped[1:5,2]),sort(semantics_adult[1:5,2]))
+semantics_ped[1:5,2]
 
 
 for i in ["Family Group","Environmental Effect of Humans","Conceptual Entity","Organization","Regulation or Law"]
@@ -54,17 +53,17 @@ for i in ["Anatomical Abnormality","Organophosphorus Compound","Body Substance",
     end
 end
 
-#mesh_descrips_filtered_ped[mesh_descrips_filtered_ped[:freq] .> .02,:]
-#mesh_descrips_filtered_adult[mesh_descrips_filtered_adult[:freq] .> .02,:]
+mesh_descrips_filtered_ped[mesh_descrips_filtered_ped[:freq] .> .02,:]
+mesh_descrips_filtered_adult[mesh_descrips_filtered_adult[:freq] .> .02,:]
 
 
-#mesh_fold(mesh_descrips_filtered_ped,mesh_descrips_filtered_adult)
+mesh_fold(mesh_descrips_filtered_ped,mesh_descrips_filtered_adult)
 
-#arules_viz(itemsets_ped)
-#arules_viz(itemsets_adult)
+arules_viz(itemsets_ped)
+arules_viz(itemsets_adult)
 
-#arules_viz(itemsets_ped, "graph")
-#arules_viz(itemsets_adult, "graph")
+arules_viz(itemsets_ped, "graph")
+arules_viz(itemsets_adult, "graph")
 
 
 mysql_disconnect(db_ped)
