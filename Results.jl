@@ -18,7 +18,7 @@ db_adult = mysql_connect("Jasons-MacBook-Air-2.local", "jasonk33", ENV["MYSQL_PS
 mesh_descrips_ped,semantics_ped,mesh_descrips_filtered_ped=get_mesh_semantics_filtered(db_ped);
 mesh_descrips_adult,semantics_adult,mesh_descrips_filtered_adult=get_mesh_semantics_filtered(db_adult);
 des_ind_dict_ped, disease_occurances_ped = umls_semantic_occurrences(db_ped, "Disease or Syndrome", "Mental or Behavioral Dysfunction", "Neoplastic Process");
-des_ind_dict_adult, disease_occurances_adult = umls_semantic_occurrences_2(db_adult, "Disease or Syndrome", "Mental or Behavioral Dysfunction", "Neoplastic Process");
+des_ind_dict_adult, disease_occurances_adult = umls_semantic_occurrences(db_adult, "Disease or Syndrome", "Mental or Behavioral Dysfunction", "Neoplastic Process");
 itemsets_ped = occurances_to_itemsets(des_ind_dict_ped, disease_occurances_ped)
 itemsets_adult = occurances_to_itemsets(des_ind_dict_adult, disease_occurances_adult)
 association_rules_ped = apriori2(itemsets_ped, .01, .01, 2, 3, 0)
@@ -66,7 +66,6 @@ arules_viz(itemsets_adult)
 
 arules_viz(itemsets_ped, "graph")
 arules_viz(itemsets_adult, "graph")
-
 
 
 mysql_disconnect(db_ped)
