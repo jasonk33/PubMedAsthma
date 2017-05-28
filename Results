@@ -5,6 +5,7 @@ using BioMedQuery.Entrez
 using BioMedQuery.Entrez.DB
 using MySQL
 using DataFrames
+using DataTables
 using StatsBase
 using PlotlyJS
 using RCall
