@@ -9,6 +9,8 @@ using StatsBase
 using PlotlyJS
 using RCall
 using AssociationRules
+using ImageView
+using Images
 
 function split_rule!(dat)
     n = size(dat, 1)

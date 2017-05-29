@@ -9,9 +9,8 @@ using StatsBase
 using PlotlyJS
 using RCall
 using AssociationRules
-using Suppressor
-using ImageView
-using Images
+
+
 
 function split_rule!(dat)
     n = size(dat, 1)
@@ -23,44 +22,44 @@ function split_rule!(dat)
 end
 
 function apriori2(dat::DataFrame, supp = 0.2, conf = 0.01, minlen = 1, maxlen = 10, minlift = 1.2)
-    @rput supp
-    @rput conf
-    @rput minlen
-    @rput maxlen
-    @rput minlift
-    @rput dat
-    R"library('arules')"
-    R"dat2 <- as(as(dat, 'matrix'),'itemMatrix')"
-    R"rules1 <- apriori(dat2, parameter = list(supp = supp, conf = conf, minlen = minlen, maxlen = maxlen), control = list(verbose = FALSE))"
-    R"rules1 <- if (length(rules1) == 0) data.frame() else rules1"
-    R"rules1 <- character_columns(as(rules1, \"data.frame\"))"
-    R"rules_sub <- subset(rules1, subset = lift > minlift)"
-    rules_df = @rget rules_sub;             # get dataframe from R
-    R"rm(dat, dat2, rules1, rules_sub, supp, conf, minlen, maxlen, minlift)"           # clean up R environment
-    split_rule!(rules_df);
-    rules_df = rules_df[:, [:lhs, :rhs, :support, :confidence, :lift]]
+    @rput supp  # add user input to r environment
+    @rput conf  # add user input to r environment
+    @rput minlen  # add user input to r environment
+    @rput maxlen  # add user input to r environment
+    @rput minlift  # add user input to r environment
+    @rput dat  # add user input to r environment
+    R"library('arules')"    # load r library to create association rules
+    R"dat2 <- as(as(dat, 'matrix'),'itemMatrix')"   # get data into proper format for apriori call
+    R"rules1 <- apriori(dat2, parameter = list(supp = supp, conf = conf, minlen = minlen, maxlen = maxlen), control = list(verbose = FALSE))"   # use apriori algorithm to get association rules for data
+    R"rules1 <- if (length(rules1) == 0) data.frame() else rules1"  # check if any rules were created
+    R"rules1 <- character_columns(as(rules1, \"data.frame\"))"  # formatting
+    R"rules_sub <- subset(rules1, subset = lift > minlift)" # filter by minimum lift
+    rules_df = @rget rules_sub; # get dataframe from R
+    R"rm(dat, dat2, rules1, rules_sub, supp, conf, minlen, maxlen, minlift)"    # clean up R environment
+    split_rule!(rules_df);  # formatting
+    rules_df = rules_df[:, [:lhs, :rhs, :support, :confidence, :lift]]  # create columns
     for i in 1:length(rules_df[1])
         lhs = rules_df[i,1][2:end-1]
         rhs = rules_df[i,2][2:end-1]
         rules_df[i,1] = lhs
         rules_df[i,2] = rhs
-    end
-    rules_df[:chi_squared] = length(dat[1]).*rules_df[:,:support].*(rules_df[:,:lift]-1).^2.*rules_df[:,:support].*rules_df[:,:confidence]./(rules_df[:,:confidence]-rules_df[:,:support])./(rules_df[:,:lift]-rules_df[:,:confidence])
-    sort!(rules_df, cols = :chi_squared, rev=true)
-    rules_df
+    end # remove brakcets around lhs and rhs strings in dataframe
+    rules_df[:chi_squared] = length(dat[1]).*rules_df[:,:support].*(rules_df[:,:lift]-1).^2.*rules_df[:,:support].*rules_df[:,:confidence]./(rules_df[:,:confidence]-rules_df[:,:support])./(rules_df[:,:lift]-rules_df[:,:confidence]) # add column with chi squared statistic for each rule
+    sort!(rules_df, cols = :chi_squared, rev=true)  # sort rules in descending order of chi squared statistic
+    rules_df # return the association rules datarame
 end
 
 function arules_viz(itemset, method="grouped", num_rules=50)
-    @rput itemset
-    @rput num_rules
-    @rput method
-    R"library('arules')"
-    R"library('arulesViz')"
-    R"data <- as(as(itemset, 'matrix'),'itemMatrix')"
-    R"rules <- apriori(data, parameter = list(supp = .01, conf = .01, minlen = 2, maxlen = 3), control = list(verbose = FALSE))"
-    plot = R"capture.output(plot(rules, method=method, control=list(k=num_rules)))"
-    R"rm(itemset, data, rules, num_rules, method)"
-    return plot
+    @rput itemset  # add user input to r environment
+    @rput num_rules  # add user input to r environment
+    @rput method  # add user input to r environment
+    R"library('arules')"    # load r library to create association rules
+    R"library('arulesViz')" # load r library to create association rules visualizations
+    R"data <- as(as(itemset, 'matrix'),'itemMatrix')"   # get data into proper format
+    R"rules <- apriori(data, parameter = list(supp = .01, conf = .01, minlen = 2, maxlen = 3), control = list(verbose = FALSE))"  # use apriori algorithm to get association rules for data
+    plot = R"capture.output(plot(rules, method=method, control=list(k=num_rules)))" # create plot (either grouped or graph) for association rules
+    R"rm(itemset, data, rules, num_rules, method)"   # clean up R environment
+    return plot # return the visualization
 end
 
 function get_mesh_semantics_filtered(db)
