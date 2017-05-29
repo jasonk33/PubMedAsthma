@@ -22,6 +22,7 @@ function split_rule!(dat)
 end
 
 function apriori2(dat::DataFrame, supp = 0.2, conf = 0.01, minlen = 1, maxlen = 10, minlift = 1.2)
+    #Uses the arules package in R to call the apriori algorithm to generate association rules for data
     @rput supp  # add user input to r environment
     @rput conf  # add user input to r environment
     @rput minlen  # add user input to r environment
@@ -50,6 +51,7 @@ function apriori2(dat::DataFrame, supp = 0.2, conf = 0.01, minlen = 1, maxlen = 
 end
 
 function arules_viz(itemset, method="grouped", num_rules=50)
+    #Uses the arulesViz package in R to create group and graph based visualization of assocation rules
     @rput itemset  # add user input to r environment
     @rput num_rules  # add user input to r environment
     @rput method  # add user input to r environment
@@ -63,6 +65,7 @@ function arules_viz(itemset, method="grouped", num_rules=50)
 end
 
 function get_mesh_semantics_filtered(db)
+    #utility function that takes in a mysql database and return a dataframes of mesh descriptors before and after filtering, and umls semantic types, as well as repective counts and frequencies
     mesh_descriptor = mysql_execute(db, "SELECT * FROM mesh_descriptor;") #get mesh descriptor data from MySQL
     mesh_heading = mysql_execute(db, "SELECT * FROM mesh_heading;") #get header data from MySQL
     mesh2umls = mysql_execute(db, "SELECT * FROM mesh2umls;") #get data umls data from MySQL
@@ -120,22 +123,23 @@ function get_mesh_semantics_filtered(db)
 end
 
 function occurances_to_itemsets(des_ind_dict, disease_occurances)
-    name_dict = sort(collect(des_ind_dict), by=x->x[2])
-    col_names = DataArray(String, length(des_ind_dict))
-    for i in 1:length(des_ind_dict)
+    #Changes the sparse occurance matrix into a dataframe ready to be used in the apriori call
+    name_dict = sort(collect(des_ind_dict), by=x->x[2]) #sort the indices from the dictionary
+    col_names = DataArray(String, length(des_ind_dict)) #initialize empty vector to be used for column names
         name = name_dict[i][1]
         col_names[i] = name
-    end
-    itemsets = DataFrame(Matrix(convert(Array{Int64}, disease_occurances')))
-    names!(itemsets, [symbol(col_names[i]) for i in 1:length(col_names)])
-    return itemsets
+    end #match the indices with the column names
+    itemsets = DataFrame(Matrix(convert(Array{Int64}, disease_occurances')))    #convert the sparse occurance matrix into a dataframe
+    names!(itemsets, [symbol(col_names[i]) for i in 1:length(col_names)])   #add the appropriate column names to the dataframe
+    return itemsets #return the object as a dataframe
 end
 
 function semantic_fold(semantic_ped, semantic_adult, term::String, verbose=true)
+    #Calculates the fold difference for specific umls semantic type between two sets of data
     try
-        fold = (semantic_ped[semantic_ped[2].==term,:freq]/semantic_adult[semantic_adult[2].==term,:freq])[1]
+        fold = (semantic_ped[semantic_ped[2].==term,:freq]/semantic_adult[semantic_adult[2].==term,:freq])[1]   #calculate fold difference for term
     catch
-        error("The term $term is not in the semantic data sets")
+        error("The term $term is not in the semantic data sets")    #check if term entered is in both sets of semantic terms
     end
     if fold < 1
         fold = inv(fold)
@@ -146,28 +150,116 @@ function semantic_fold(semantic_ped, semantic_adult, term::String, verbose=true)
         if verbose == true
             println("The term $term is associated more with pediatric asthma")
         end
-    end
-    return round(fold,2)
+    end #check to see which type of asthma the term is more associated with
+    return round(fold,2)    #round final fold difference
 end
 
 function mesh_fold(mesh_ped, mesh_adult)
+    #Gets dataframe of fold differences between semantic terms in two data sets (filtering applied within function)
+    mesh_set = join(mesh_ped,mesh_adult,on=:mesh_descriptor)    #join both mesh descriptor dataframes
+    mesh_set_filt = mesh_set[mesh_set[:freq] + mesh_set[:freq_1] .>.005,:]  #filter for only terms where total frequency is above 0.5%
 
-    mesh_set = join(mesh_ped,mesh_adult,on=:mesh_descriptor)
-    mesh_set_filt = mesh_set[mesh_set[:freq] + mesh_set[:freq_1] .>.005,:]
-
-    mesh_set_filt[:fold_ped]=Array(Float64, length(mesh_set_filt[1]))
+    mesh_set_filt[:fold_ped]=Array(Float64, length(mesh_set_filt[1]))   #add column to store fold differences for pediatric terms
     for i in mesh_set_filt[2]
-        j = mesh_set_filt[mesh_set_filt[2].==i,1]
         mesh_set_filt[mesh_set_filt[2].==i,:fold_ped] = (mesh_set_filt[mesh_set_filt[2].==i,:freq]/mesh_set_filt[mesh_set_filt[2].==i,:freq_1])[1]
-    end
+    end #get fold differences
 
-    mesh_set_filt[:fold_adult]=Array(Float64, length(mesh_set_filt[1]))
+    mesh_set_filt[:fold_adult]=Array(Float64, length(mesh_set_filt[1]))   #add column to store fold differences for adult terms
     for i in mesh_set_filt[2]
-        j = mesh_set_filt[mesh_set_filt[2].==i,1]
         mesh_set_filt[mesh_set_filt[2].==i,:fold_adult] = (mesh_set_filt[mesh_set_filt[2].==i,:freq_1]/mesh_set_filt[mesh_set_filt[2].==i,:freq])[1]
+    end #get fold differences
+
+    folds_mesh = sort(mesh_set_filt[(mesh_set_filt[:fold_ped].>5) | (mesh_set_filt[:fold_adult].>5),[2,6,7]],cols=2,rev=true)   #filter for fold differences above 5
+
+    return folds_mesh[folds_mesh[2].>1,1:2],sort(folds_mesh[folds_mesh[3].>1,[1,3]],cols=2,rev=true)    #seperate fold differences for pediatric and adult terms
+end
+
+function filter_mesh_by_concepts(db, umls_concepts...)
+    #Updated on bcbi BioMedQuery github
+    if length(umls_concepts) == 1
+        uc = string("'", replace(umls_concepts, "'", "''") , "'")
+        query  = mysql_execute(db, "SELECT mesh FROM mesh2umls
+        WHERE umls LIKE $uc ")
+    else
+        query_1 = string(" '", umls_concepts[1], "'")
+        queries = DataArray(String, length(umls_concepts)-1)
+        for i in 2:length(umls_concepts)
+            query = string(", '", umls_concepts[i], "'")
+            queries[i-1] = query
+        end
+        query_2 = join(queries)
+        query_joined = string("SELECT mesh FROM mesh2umls WHERE umls IN (", query_1, query_2, " )")
+        query  = mysql_execute(db, query_joined)
+    end
+    #return data array
+    return get_value(query.columns[1])
+end
+
+function lhs_rhs_vals(association_rules)
+    #Grouped Matrix plot data in Julia (outdated)
+    lhs_counts = collect(zip(values(countmap(association_rules[1])),keys(countmap(association_rules[1]))))
+    lhs_before=DataFrame(term=[])
+    for i in 1:length(lhs_counts)
+        left = [lhs_counts[i][2]]
+        push!(lhs_before, left)
     end
 
-    folds_mesh = sort(mesh_set_filt[(mesh_set_filt[:fold_ped].>5) | (mesh_set_filt[:fold_adult].>5),[2,6,7]],cols=2,rev=true)
+    rhs_counts = collect(zip(values(countmap(association_rules[2])),keys(countmap(association_rules[2]))))
+    rhs_before=DataFrame(term=[])
+    for i in 1:length(rhs_counts)
+        right = [rhs_counts[i][2]]
+        push!(rhs_before, right)
+    end
 
-    return folds_mesh[folds_mesh[2].>1,1:2],sort(folds_mesh[folds_mesh[3].>1,[1,3]],cols=2,rev=true)
+    lhs = DataArray(String,length(lhs_counts))
+    for i in 1:length(lhs_counts)
+        name = string(lhs_counts[i][2], " : ", lhs_counts[i][1])
+        lhs[i]=name
+    end
+
+    rhs = DataArray(String,length(rhs_counts))
+    for i in 1:length(rhs_counts)
+        name = string(rhs_counts[i][2], " : ", rhs_counts[i][1])
+        rhs[i] = name
+    end
+
+    x_vals = DataArray(String, length(association_rules[1]))
+    for i in 1:length(association_rules[1])
+        x_val = lhs[association_rules[i,1].==lhs_before[1],1][1]
+        x_vals[i] = x_val
+    end
+
+    y_vals = DataArray(String, length(association_rules[1]))
+    for i in 1:length(association_rules[1])
+        y_val = rhs[association_rules[i,2].==rhs_before[1],1][1]
+        y_vals[i] = y_val
+    end
+
+    return x_vals, y_vals
+end
+
+function change_bubbles(x_vals, y_vals)
+    #Change where bubble lie in grouped matrix visualization of association rules
+    dat2 = DataFrame(x=x_vals, y=y_vals)
+    counts = []
+    for i in 1:length(dat2[1])
+        yes = isequal(mode(x_vals), dat2[i,1]) | isequal(mode(y_vals), dat2[i,2])
+        if yes == false
+            count = i
+            push!(counts, count)
+        end
+    end
+    cc = convert(DataArray{Int}, counts)
+    datt = dat2[cc,:]
+    counts = []
+    for i in 1:length(dat2[1])
+        yes = isequal(mode(x_vals), dat2[i,1]) | isequal(mode(y_vals), dat2[i,2])
+        if yes == true
+            count = i
+            push!(counts, count)
+        end
+    end
+    cc = convert(DataArray{Int}, counts)
+    dattt = append!(datt,dat2[cc,:])
+    return dattt[1],dattt[2]
 end
